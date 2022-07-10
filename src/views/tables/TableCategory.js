@@ -21,6 +21,8 @@ const columns = [
   { id: 'size', label: 'Action', align: 'center' },
 ]
 
+
+//
 const TableCategory = ({ data }) => {
   const router = useRouter();
 
