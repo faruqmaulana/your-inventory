@@ -1,0 +1,102 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       Int     @id @default(autoincrement())
+  name     String?
+  username String?
+  password String?
+  email    String?
+  phone    String?
+  role     Role    @default(USER)
+
+  incomingItem IncomingItem[]
+  exitItem     ExitItem[]
+
+  @@map("users")
+}
+
+model Supplier {
+  id           Int            @id @default(autoincrement())
+  name         String?        @unique
+  phone        String?
+  address      String?
+  incomingItem IncomingItem[]
+
+  @@map("suppliers")
+}
+
+model Category {
+  id    Int     @id @default(autoincrement())
+  name  String? @unique
+  goods Goods[]
+
+  @@map("categories")
+}
+
+model Unit {
+  id    Int     @id @default(autoincrement())
+  name  String? @unique
+  goods Goods[]
+
+  @@map("units")
+}
+
+model Goods {
+  id         Int     @id @default(autoincrement())
+  name       String? @unique
+  stock      Int     @default(0)
+  categoryId Int
+  unitId     Int
+
+  category Category @relation(fields: [categoryId], references: [id])
+  unit     Unit     @relation(fields: [unitId], references: [id])
+
+  ExitItem     ExitItem[]
+  IncomingItem IncomingItem[]
+  @@map("goods")
+}
+
+model IncomingItem {
+  id      Int     @id @default(autoincrement())
+  date    String?
+  entries Int?
+
+  goodsId    Int
+  userId     Int
+  supplierId Int
+
+  goods    Goods    @relation(fields: [goodsId], references: [id])
+  user     User     @relation(fields: [userId], references: [id])
+  supplier Supplier @relation(fields: [supplierId], references: [id])
+
+  @@map("incoming_items")
+}
+
+model ExitItem {
+  id         Int     @id @default(autoincrement())
+  date       String?
+  amount_out Int?
+
+  goodsId Int
+  userId  Int
+
+  goods Goods @relation(fields: [goodsId], references: [id])
+  user  User  @relation(fields: [userId], references: [id])
+
+  @@map("exit_items")
+}
+
+enum Role {
+  USER
+  ADMIN
+}
