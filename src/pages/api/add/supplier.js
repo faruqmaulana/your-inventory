@@ -9,10 +9,11 @@ export default async function addUsers(req, res) {
     res.status(200);
     res.json({
       message: "Data successfully added",
-      user: { ...data },
+      data,
     });
   } catch (error) {
     res.status(400);
+    console.log(error)
     res.json({
       message: "Failed insert data to database",
     });
