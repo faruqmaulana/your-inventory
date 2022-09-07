@@ -1,6 +1,5 @@
 // ** Icon imports
 import Login from 'mdi-material-ui/Login'
-import Table from 'mdi-material-ui/Table'
 import Folder from 'mdi-material-ui/Folder'
 import Account from 'mdi-material-ui/Account'
 import Database from 'mdi-material-ui/Database'
@@ -30,7 +29,7 @@ const navigation = () => {
     },
     {
       title: 'Data Barang',
-      path: '/data-barang',
+      path: '/goods',
       icon: Database
     },
     {
@@ -77,30 +76,6 @@ const navigation = () => {
       title: 'Register',
       icon: AccountPlusOutline,
       path: '/pages/register',
-      openInNewTab: true
-    },
-    {
-      sectionTitle: '--------- END ---------'
-    },
-    {
-      title: 'Icons',
-      path: '/icons',
-      icon: Database
-    },
-    {
-      title: 'Cards',
-      icon: FolderOpen,
-      path: '/cards'
-    },
-    {
-      icon: CubeOutline,
-      title: 'Form Layouts',
-      path: '/form-layouts'
-    },
-    {
-      title: 'Error',
-      icon: AlertCircleOutline,
-      path: '/pages/error',
       openInNewTab: true
     },
   ]

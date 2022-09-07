@@ -3,7 +3,7 @@ import { Grid, Card, CardHeader, Box } from '@mui/material'
 
 // ** Demo Components Imports
 import TableSupplier from 'src/views/tables/TableSupplier'
-import AddSupplier from 'src/pages/form/add/AddSupplier'
+import AddSupplier from 'src/views/form/add/AddSupplier'
 import prisma from 'src/lib/prisma'
 
 

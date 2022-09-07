@@ -50,7 +50,7 @@ export default function EditCategory({ props }) {
     e.preventDefault();
     setOpen(false);
     try {
-      const result = await axios.put("/api/update/supplier", state);
+      const result = await axios.put(`/api/update/${router.asPath}`, state);
       Swal.fire({
         icon: "success",
         title: result.data.message,
@@ -64,7 +64,7 @@ export default function EditCategory({ props }) {
       Swal.fire({
         icon: "error",
         title: 'Gagal memperbarui data!',
-        text: `${state.name} sudah ada dalam kategori.`,
+        text: `${state.name} sudah ada dalam list data!`,
         showConfirmButton: true,
       }).then((confirm) => {
         if (confirm.isConfirmed) {

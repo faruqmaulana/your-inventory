@@ -71,8 +71,8 @@ model IncomingItem {
   date    String?
   entries Int?
 
-  goodsId    Int
   userId     Int
+  goodsId    Int
   supplierId Int
 
   goods    Goods    @relation(fields: [goodsId], references: [id])

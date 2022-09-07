@@ -55,8 +55,10 @@ export default function AddSupplier() {
         if (result.status === 200) {
             setState({
                 name: '',
+                username: '',
+                email: '',
                 phone: '',
-                address: ''
+                role: 'USER'
             });
 
             Swal.fire({
@@ -74,7 +76,7 @@ export default function AddSupplier() {
 
     return (
         <div>
-            <Button onClick={handleOpen} sx={{ bgcolor: 'primary.main', color: 'white', marginRight: 3, ":hover": { bgcolor: 'primary.dark' } }}>+ Tambah Data Supplier</Button>
+            <Button onClick={handleOpen} sx={{ bgcolor: 'primary.main', color: 'white', marginRight: 3, ":hover": { bgcolor: 'primary.dark' } }}>+ Tambah Data User</Button>
             <Modal
                 aria-labelledby="transition-modal-title"
                 aria-describedby="transition-modal-description"
@@ -169,7 +171,7 @@ export default function AddSupplier() {
                                     row
                                     aria-labelledby="demo-row-radio-buttons-group-label"
                                     name="role"
-                                    value="USER"
+                                    value={state.role}
                                     onChange={handleChange}
                                 >
                                     <FormControlLabel value="USER" control={<Radio />} label="User" />

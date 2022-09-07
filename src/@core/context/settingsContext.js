@@ -1,5 +1,5 @@
 // ** React Imports
-import { createContext, useState } from 'react'
+import { createContext, useEffect, useState } from 'react'
 
 // ** ThemeConfig Import
 import themeConfig from 'src/configs/themeConfig'
@@ -10,6 +10,7 @@ const initialSettings = {
   contentWidth: themeConfig.contentWidth
 }
 
+
 // ** Create Context
 export const SettingsContext = createContext({
   saveSettings: () => null,
@@ -18,7 +19,18 @@ export const SettingsContext = createContext({
 
 export const SettingsProvider = ({ children }) => {
   // ** State
+  // const [theme, setTheme] = useState('');
+
+
+  // const newInitalSettings = { ...initialSettings, mode: theme }
   const [settings, setSettings] = useState({ ...initialSettings })
+
+  // useEffect(() => {
+  //   const getTheme = localStorage.getItem('app-theme');
+  //   if (!getTheme) return setTheme('light')
+
+  //   return setTheme(getTheme)
+  // }, [settings, theme])
 
   const saveSettings = updatedSettings => {
     setSettings(updatedSettings)

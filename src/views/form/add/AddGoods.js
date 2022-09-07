@@ -11,6 +11,8 @@ import Fade from '@mui/material/Fade';
 import Button from '@mui/material/Button';
 import { FormControl, InputAdornment, InputLabel, MenuItem, TextField, Select } from '@mui/material';
 import { Account, Close } from 'mdi-material-ui';
+import { fetcher } from "src/utils/fetcher";
+import { alert } from "src/utils/alert";
 
 
 const style = {
@@ -49,18 +51,11 @@ export default function AddCategory({ data }) {
         e.preventDefault();
         setOpen(false);
         try {
-            const result = await axios.post(`/api/add/${router.asPath}`, state);
+            const { title, name } = await fetcher('POST', '/add/goods', state)
             setState({
                 name: '',
             });
-            Swal.fire({
-                icon: "success",
-                title: result.data.message,
-                text: `${result.data.data.name} berhasil ditambahkan kedalam jenis barang`,
-                showConfirmButton: false,
-                timer: 1800
-            });
-
+            alert(title, `${name} berhasil`, 'barang', false, 1800)
             setTimeout(() => {
                 router.replace(router.asPath);
             }, 1800);

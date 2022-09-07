@@ -26,6 +26,8 @@ import 'react-perfect-scrollbar/dist/css/styles.css'
 
 // ** Global css styles
 import '../../styles/globals.css'
+import { AppContext } from 'src/context/app-context'
+import { useState } from 'react'
 
 const clientSideEmotionCache = createEmotionCache()
 
@@ -45,6 +47,12 @@ if (themeConfig.routingLoader) {
 // ** Configure JSS & ClassName
 const App = props => {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props
+  const [user, setUser] = useState(1);
+
+  const appContextValue = {
+    user,
+    setUser,
+  };
 
   // Variables
   const getLayout = Component.getLayout ?? (page => <UserLayout>{page}</UserLayout>)
@@ -64,11 +72,13 @@ const App = props => {
       <SettingsProvider>
         <SettingsConsumer>
           {({ settings }) => {
-            return <ThemeComponent settings={settings}>{getLayout(<Component {...pageProps} />)}</ThemeComponent>
+
+            return <AppContext.Provider value={appContextValue}><ThemeComponent settings={settings}>{getLayout(<Component {...pageProps} />)}</ThemeComponent></AppContext.Provider>
+
           }}
         </SettingsConsumer>
       </SettingsProvider>
-    </CacheProvider>
+    </CacheProvider >
   )
 }
 

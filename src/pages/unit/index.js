@@ -3,7 +3,7 @@ import { Grid, Card, CardHeader, Box } from '@mui/material'
 
 // ** Demo Components Imports
 import TableUnit from 'src/views/tables/TableUnit'
-import AddSupplier from 'src/pages/form/add/AddSupplier'
+import AddUnit from 'src/views/form/add/AddUnit'
 import prisma from 'src/lib/prisma'
 
 
@@ -23,8 +23,8 @@ const TypographyPage = ({ data }) => {
       <Grid item xs={12}>
         <Card>
           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <CardHeader title='Data Supplier' titleTypographyProps={{ variant: 'h6' }} />
-            <AddSupplier></AddSupplier>
+            <CardHeader title='Data Satuan Barang' titleTypographyProps={{ variant: 'h6' }} />
+            <AddUnit></AddUnit>
           </Box>
           <TableUnit data={data}></TableUnit>
         </Card>

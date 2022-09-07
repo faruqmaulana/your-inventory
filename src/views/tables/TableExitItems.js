@@ -1,5 +1,8 @@
 // ** React Imports
+import axios from 'axios'
+import Swal from 'sweetalert2'
 import { useState } from 'react'
+import { useRouter } from 'next/router'
 
 // ** MUI Imports
 import Paper from '@mui/material/Paper'
@@ -10,7 +13,7 @@ import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
 import TableContainer from '@mui/material/TableContainer'
 import TablePagination from '@mui/material/TablePagination'
-import { PencilCircle } from 'mdi-material-ui'
+import { Delete, PencilCircle } from 'mdi-material-ui'
 
 const columns = [
   { id: 'no', label: 'No' },
@@ -18,16 +21,16 @@ const columns = [
   { id: 'name', minWidth: 170, label: 'Tanggal Keluar', align: 'center' },
   { id: 'stock', minWidth: 170, label: 'Nama Barang', align: 'center' },
   { id: 'satuan', minWidth: 170, label: 'Jumlah Keluar', align: 'center' },
-  { id: 'size', minWidth: 170, label: 'User', align: 'center' },
-  { id: 'size', label: 'Aksi', align: 'center' },
+  { id: 'user', minWidth: 170, label: 'User', align: 'center' },
+  { id: 'aksi', label: 'Aksi', align: 'center' },
 ]
 
 const TableExitItems = ({ data }) => {
-  console.log(data)
 
   // ** States
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(10)
+  const router = useRouter()
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage)
@@ -38,6 +41,45 @@ const TableExitItems = ({ data }) => {
     setPage(0)
   }
 
+  function deleteHandler(id) {
+    Swal.fire({
+      title: 'Apakah anda yakin?',
+      text: "Data akan dihapus secara permanen!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Iya, hapus!',
+      cancelButtonText: 'Batal'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        (async () => {
+          try {
+            const result = await axios.delete(`/api/delete/${router.asPath + id}`, id);
+            Swal.fire({
+              icon: "success",
+              title: result.data.message,
+              showConfirmButton: false,
+              timer: 1800,
+            });
+
+            setTimeout(() => {
+              router.replace(router.asPath);
+            }, 1800);
+
+          } catch (error) {
+            console.log(error)
+            Swal.fire({
+              icon: "error",
+              title: 'Gagal menghapus data!',
+              text: 'Data yang anda hapus memiliki relasi dengan data lain, hapus data terkait untuk melanjutkan!',
+            });
+          }
+        })()
+      }
+    })
+  }
+
   return (
     <Paper sx={{ width: '100%', overflow: 'hidden' }}>
       <TableContainer sx={{ maxHeight: 440 }}>
@@ -45,7 +87,7 @@ const TableExitItems = ({ data }) => {
           <TableHead>
             <TableRow>
               {columns.map(column => (
-                <TableCell key={column.id} align={column.align} sx={{ minWidth: column.minWidth }}>
+                <TableCell key={column.label} align={column.align} sx={{ minWidth: column.minWidth }}>
                   {column.label}
                 </TableCell>
               ))}
@@ -82,9 +124,7 @@ const TableExitItems = ({ data }) => {
                       </span>
                     </TableCell>
                     <TableCell align='center'>
-                      <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                        <PencilCircle /> &nbsp;|&nbsp;<PencilCircle />
-                      </span>
+                      <Delete onClick={() => { deleteHandler(item.id) }} sx={{ ":hover": { cursor: 'pointer', color: 'red' } }} />
                     </TableCell>
                   </TableRow>
                 )

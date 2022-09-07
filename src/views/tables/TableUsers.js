@@ -1,5 +1,9 @@
+import axios from 'axios'
+import Swal from 'sweetalert2'
+
 // ** React Imports
 import { useState } from 'react'
+import { useRouter } from 'next/router'
 
 // ** MUI Imports
 import Paper from '@mui/material/Paper'
@@ -10,7 +14,8 @@ import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
 import TableContainer from '@mui/material/TableContainer'
 import TablePagination from '@mui/material/TablePagination'
-import { PencilCircle } from 'mdi-material-ui'
+import { Delete } from 'mdi-material-ui'
+import EditUser from '../form/edit/EditUser'
 
 const columns = [
   { id: 'no', label: 'No' },
@@ -23,7 +28,7 @@ const columns = [
 ]
 
 const TableExitItems = ({ data }) => {
-  console.log(data)
+  const router = useRouter()
 
   // ** States
   const [page, setPage] = useState(0)
@@ -38,6 +43,44 @@ const TableExitItems = ({ data }) => {
     setPage(0)
   }
 
+  function deleteHandler(id) {
+    Swal.fire({
+      title: 'Apakah anda yakin?',
+      text: "Data akan dihapus secara permanen!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Iya, hapus!',
+      cancelButtonText: 'Batal'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        (async () => {
+          try {
+            const result = await axios.delete(`/api/delete/${router.asPath + id}`, id);
+            Swal.fire({
+              icon: "success",
+              title: result.data.message,
+              showConfirmButton: false,
+              timer: 1800,
+            });
+
+            setTimeout(() => {
+              router.replace(router.asPath);
+            }, 1800);
+
+          } catch (error) {
+            Swal.fire({
+              icon: "error",
+              title: 'Gagal menghapus data!',
+              text: 'Kategori yang anda hapus memiliki relasi dengan data lain, hapus data terkait untuk melanjutkan!',
+            });
+          }
+        })()
+      }
+    })
+  }
+
   return (
     <Paper sx={{ width: '100%', overflow: 'hidden' }}>
       <TableContainer sx={{ maxHeight: 440 }}>
@@ -45,7 +88,7 @@ const TableExitItems = ({ data }) => {
           <TableHead>
             <TableRow>
               {columns.map(column => (
-                <TableCell key={column.id} align={column.align} sx={{ minWidth: column.minWidth }}>
+                <TableCell key={column.label} align={column.align} sx={{ minWidth: column.minWidth }}>
                   {column.label}
                 </TableCell>
               ))}
@@ -79,9 +122,11 @@ const TableExitItems = ({ data }) => {
                       {item.role}
                     </TableCell>
                     <TableCell align='center'>
-                      <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                        <PencilCircle /> &nbsp;|&nbsp;<PencilCircle />
-                      </span>
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'row', minWidth: '5rem' }}>
+                        <EditUser props={item} />
+                        &nbsp; | &nbsp;
+                        <Delete onClick={() => { deleteHandler(item.id) }} sx={{ ":hover": { cursor: 'pointer', color: 'red' } }} />
+                      </div>
                     </TableCell>
                   </TableRow>
                 )

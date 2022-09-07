@@ -15,7 +15,7 @@ import TableCell from '@mui/material/TableCell'
 import TableContainer from '@mui/material/TableContainer'
 import TablePagination from '@mui/material/TablePagination'
 import { Delete } from 'mdi-material-ui'
-import EditSupplier from 'src/pages/form/edit/EditSupplier'
+import EditSupplier from 'src/views/form/edit/EditSupplier'
 
 const columns = [
   { id: 'no', label: 'No' },

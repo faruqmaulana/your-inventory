@@ -9,7 +9,7 @@ export default async function addUsers(req, res) {
     res.status(200);
     res.json({
       message: "Data successfully added",
-      data: { ...data },
+      data,
     });
   } catch (error) {
     res.status(400);
