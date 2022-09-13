@@ -5,6 +5,7 @@ import useMediaQuery from '@mui/material/useMediaQuery'
 
 // ** Icons Imports
 import Menu from 'mdi-material-ui/Menu'
+import { useSession } from 'next-auth/react'
 
 // ** Components
 import ModeToggler from 'src/@core/layouts/components/shared-components/ModeToggler'
@@ -13,6 +14,7 @@ import UserDropdown from 'src/@core/layouts/components/shared-components/UserDro
 const AppBarContent = props => {
   // ** Props
   const { hidden, settings, saveSettings, toggleNavVisibility } = props
+  const { data, status } = useSession()
 
   // ** Hook
   const hiddenSm = useMediaQuery(theme => theme.breakpoints.down('sm'))
@@ -30,7 +32,7 @@ const AppBarContent = props => {
           </IconButton>
         ) : null}
         <Box sx={{ fontWeight: '800', fontSize: '1rem', padding: '20px', color: 'text.primary' }}>
-          Selamat Datang, Your Name
+          {data ? `Selamat datang, ${data.name}` : "Loading..."}
         </Box>
       </Box>
       <Box className='actions-right' sx={{ display: 'flex', alignItems: 'center' }}>

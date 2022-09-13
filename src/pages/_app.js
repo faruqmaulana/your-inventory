@@ -28,6 +28,7 @@ import 'react-perfect-scrollbar/dist/css/styles.css'
 import '../../styles/globals.css'
 import { AppContext } from 'src/context/app-context'
 import { useState } from 'react'
+import { SessionProvider } from 'next-auth/react'
 
 const clientSideEmotionCache = createEmotionCache()
 
@@ -57,27 +58,30 @@ const App = props => {
   // Variables
   const getLayout = Component.getLayout ?? (page => <UserLayout>{page}</UserLayout>)
 
+  // const session = useSession()
   return (
     <CacheProvider value={emotionCache}>
-      <Head>
-        <title>{`${themeConfig.templateName} - Material Design React Admin Template`}</title>
-        <meta
-          name='description'
-          content={`${themeConfig.templateName} – Material Design React Admin Dashboard Template – is the most developer friendly & highly customizable Admin Dashboard Template based on MUI v5.`}
-        />
-        <meta name='keywords' content='Material Design, MUI, Admin Template, React Admin Template' />
-        <meta name='viewport' content='initial-scale=1, width=device-width' />
-      </Head>
+      <SessionProvider session={pageProps.session}>
+        <Head>
+          <title>{`${themeConfig.templateName} - Material Design React Admin Template`}</title>
+          <meta
+            name='description'
+            content={`${themeConfig.templateName} – Material Design React Admin Dashboard Template – is the most developer friendly & highly customizable Admin Dashboard Template based on MUI v5.`}
+          />
+          <meta name='keywords' content='Material Design, MUI, Admin Template, React Admin Template' />
+          <meta name='viewport' content='initial-scale=1, width=device-width' />
+        </Head>
 
-      <SettingsProvider>
-        <SettingsConsumer>
-          {({ settings }) => {
+        <SettingsProvider>
+          <SettingsConsumer>
+            {({ settings }) => {
 
-            return <AppContext.Provider value={appContextValue}><ThemeComponent settings={settings}>{getLayout(<Component {...pageProps} />)}</ThemeComponent></AppContext.Provider>
+              return <AppContext.Provider value={appContextValue}><ThemeComponent settings={settings}>{getLayout(<Component {...pageProps} />)}</ThemeComponent></AppContext.Provider>
 
-          }}
-        </SettingsConsumer>
-      </SettingsProvider>
+            }}
+          </SettingsConsumer>
+        </SettingsProvider>
+      </SessionProvider>
     </CacheProvider >
   )
 }

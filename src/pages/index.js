@@ -9,15 +9,17 @@ import StatisticsCard from 'src/views/dashboard/StatisticsCard'
 import TableMinimumStock from 'src/views/tables/TableMinimumStock'
 import TableEntries from 'src/views/tables/TableEntries'
 import TableAmountOut from 'src/views/tables/TableAmountOut'
-import { Box, Card } from '@mui/material'
+import { Box, Button, Card } from '@mui/material'
 import prisma from 'src/lib/prisma'
-import { Table } from 'mdi-material-ui'
+import { getSession, signIn } from 'next-auth/react'
 
-export async function getServerSideProps() {
+export async function getServerSideProps(context) {
+  //get session
+  const session = await getSession(context);
 
   const getGoodsCount = await prisma.goods.findMany()
-  const getSupplierCount = await prisma.supplier.findMany()
-  const getUserCount = await prisma.user.findMany()
+  const getSupplierCount = await prisma.supplier.count()
+  const getUserCount = await prisma.user.count()
 
   // get stock total 
   const getStockTotal = getGoodsCount.map(data => { return data.stock })
@@ -39,8 +41,8 @@ export async function getServerSideProps() {
 
   const totalCount = {
     goodsCount: getGoodsCount.length,
-    supplierCount: getSupplierCount.length,
-    userCount: getUserCount.length,
+    supplierCount: getSupplierCount,
+    userCount: getUserCount,
     stockCount
   }
 

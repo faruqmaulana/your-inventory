@@ -4,13 +4,11 @@ import Folder from 'mdi-material-ui/Folder'
 import Account from 'mdi-material-ui/Account'
 import Database from 'mdi-material-ui/Database'
 import FolderOpen from 'mdi-material-ui/FolderOpen'
-import CubeOutline from 'mdi-material-ui/CubeOutline'
 import HomeOutline from 'mdi-material-ui/HomeOutline'
 import AccountGroup from 'mdi-material-ui/AccountGroup'
 import FolderUpload from 'mdi-material-ui/FolderUpload'
 import FolderDownload from 'mdi-material-ui/FolderDownload'
 import AccountPlusOutline from 'mdi-material-ui/AccountPlusOutline'
-import AlertCircleOutline from 'mdi-material-ui/AlertCircleOutline'
 
 const navigation = () => {
   return [
@@ -69,14 +67,12 @@ const navigation = () => {
     {
       title: 'Login',
       icon: Login,
-      path: '/pages/login',
-      openInNewTab: true
+      path: '/pages/login'
     },
     {
       title: 'Register',
       icon: AccountPlusOutline,
-      path: '/pages/register',
-      openInNewTab: true
+      path: '/pages/register'
     },
   ]
 }

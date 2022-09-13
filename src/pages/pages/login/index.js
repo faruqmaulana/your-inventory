@@ -1,6 +1,9 @@
 // ** React Imports
 import { useState } from 'react'
 
+// **  NextAuth
+import { signIn } from 'next-auth/react'
+
 // ** Next Imports
 import Link from 'next/link'
 import { useRouter } from 'next/router'
@@ -60,6 +63,7 @@ const FormControlLabel = styled(MuiFormControlLabel)(({ theme }) => ({
 const LoginPage = () => {
   // ** State
   const [values, setValues] = useState({
+    email: '',
     password: '',
     showPassword: false
   })
@@ -78,6 +82,14 @@ const LoginPage = () => {
 
   const handleMouseDownPassword = event => {
     event.preventDefault()
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    const { email, password } = values;
+
+    const res = await signIn('credentials', { email, password, redirect: false })
+    if (res.error === null) return router.push('/')
   }
 
   return (
@@ -163,8 +175,17 @@ const LoginPage = () => {
             </Typography>
             <Typography variant='body2'>Please sign-in to your account and start the adventure</Typography>
           </Box>
-          <form noValidate autoComplete='off' onSubmit={e => e.preventDefault()}>
-            <TextField autoFocus fullWidth id='email' label='Email' sx={{ marginBottom: 4 }} />
+          <form method="post" onSubmit={handleSubmit}>
+            <TextField
+              autoFocus
+              fullWidth
+              id='email'
+              label='Email'
+              type='email'
+              value={values.email}
+              onChange={handleChange('email')}
+              sx={{ marginBottom: 4 }}
+            />
             <FormControl fullWidth>
               <InputLabel htmlFor='auth-login-password'>Password</InputLabel>
               <OutlinedInput
@@ -197,10 +218,11 @@ const LoginPage = () => {
             </Box>
             <Button
               fullWidth
+              type='submit'
+              value='Login'
               size='large'
               variant='contained'
               sx={{ marginBottom: 7 }}
-              onClick={() => router.push('/')}
             >
               Login
             </Button>

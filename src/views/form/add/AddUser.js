@@ -9,7 +9,7 @@ import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 import Button from '@mui/material/Button';
-import { Account, Phone, Close, EmailOutline } from 'mdi-material-ui';
+import { Account, Phone, Close, EmailOutline, Key } from 'mdi-material-ui';
 import { InputAdornment, TextField, Radio, RadioGroup, FormControlLabel, FormControl, FormLabel } from '@mui/material';
 
 
@@ -27,7 +27,7 @@ const style = {
     paddingBottom: 10,
 };
 
-export default function AddSupplier() {
+export default function AddUser() {
     const router = useRouter();
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
@@ -36,6 +36,7 @@ export default function AddSupplier() {
     const [state, setState] = useState({
         name: '',
         username: '',
+        password: '',
         email: '',
         phone: '',
         role: 'USER'
@@ -56,6 +57,7 @@ export default function AddSupplier() {
             setState({
                 name: '',
                 username: '',
+                password: '',
                 email: '',
                 phone: '',
                 role: 'USER'
@@ -125,6 +127,24 @@ export default function AddSupplier() {
                                     startAdornment: (
                                         <InputAdornment position='start'>
                                             <Account />
+                                        </InputAdornment>
+                                    )
+                                }}
+                            />
+                            <TextField
+                                required
+                                value={state.password}
+                                onChange={handleChange}
+                                name="password"
+                                style={{ marginBottom: 20 }}
+                                fullWidth
+                                label='Password'
+                                type="password"
+                                placeholder='Password'
+                                InputProps={{
+                                    startAdornment: (
+                                        <InputAdornment position='start'>
+                                            <Key />
                                         </InputAdornment>
                                     )
                                 }}

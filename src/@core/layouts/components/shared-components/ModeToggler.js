@@ -13,7 +13,6 @@ const ModeToggler = props => {
   }
 
   const handleModeToggle = () => {
-    console.log(1)
     if (settings.mode === 'light') {
       handleModeChange('dark')
     } else {
