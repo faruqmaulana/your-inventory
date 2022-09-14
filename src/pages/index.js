@@ -16,7 +16,7 @@ import { authentication } from 'src/utils/authentication'
 
 export async function getServerSideProps(context) {
   //authentication
-  const session = getSession(context)
+  const session = await getSession(context)
 
   //get count data
   const getGoodsCount = await prisma.goods.findMany()
