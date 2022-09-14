@@ -61,20 +61,19 @@ const navigation = () => {
       icon: AccountGroup,
       path: '/users'
     },
-
-    // {
-    //   sectionTitle: 'Pages'
-    // },
-    // {
-    //   title: 'Login',
-    //   icon: Login,
-    //   path: '/pages/login'
-    // },
-    // {
-    //   title: 'Register',
-    //   icon: AccountPlusOutline,
-    //   path: '/pages/register'
-    // },
+    {
+      sectionTitle: 'Pages'
+    },
+    {
+      title: 'Login',
+      icon: Login,
+      path: '/pages/login'
+    },
+    {
+      title: 'Register',
+      icon: AccountPlusOutline,
+      path: '/pages/register'
+    },
   ]
 }
 

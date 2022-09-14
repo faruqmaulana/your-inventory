@@ -45,8 +45,10 @@ const renderStats = ({ data, session }) => {
     }
   ]
 
-  if (session.role === 'USER') {
-    delete salesData[3]
+  if (session) {
+    if (session.role === 'USER') {
+      delete salesData[3]
+    }
   }
 
   return salesData.map((item, index) => (
