@@ -1,3 +1,10 @@
+// const getTheme = () => {
+//   return localStorage.getItem('app-theme')
+// }
+
+// console.log(getTheme)
+
+// const theme = 
 const themeConfig = {
   // ** Layout Configs
   templateName: 'Inventory App' /* App Name */,

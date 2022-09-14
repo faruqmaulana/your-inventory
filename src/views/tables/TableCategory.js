@@ -1,6 +1,7 @@
-// ** React Imports
 import axios from 'axios'
 import Swal from 'sweetalert2'
+
+// ** React Imports
 import { useState } from 'react'
 import { useRouter } from 'next/router'
 
@@ -13,16 +14,16 @@ import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
 import TableContainer from '@mui/material/TableContainer'
 import TablePagination from '@mui/material/TablePagination'
-import { PencilCircle, Delete } from 'mdi-material-ui'
+import EditCategory from 'src/views/form/edit/EditCategory'
+
+import { Delete } from 'mdi-material-ui'
 
 const columns = [
   { id: 'no', label: 'No' },
   { id: 'name', minWidth: 800, label: 'Nama Barang' },
-  { id: 'size', label: 'Action', align: 'center' },
+  { id: 'size', label: 'Aksi', align: 'center' },
 ]
 
-
-//
 const TableCategory = ({ data }) => {
   const router = useRouter();
 
@@ -39,20 +40,22 @@ const TableCategory = ({ data }) => {
     setPage(0)
   }
 
-  function handleDelete(id) {
+  function deleteHandler(id) {
     Swal.fire({
-      title: 'Are you sure?',
-      text: "You won't be able to revert this!",
+      title: 'Apakah anda yakin?',
+      text: "Data akan dihapus secara permanen!",
       icon: 'warning',
+      iconColor: '#9155fd',
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, delete it!'
+      confirmButtonColor: '#312D4B',
+      cancelButtonColor: '#9155fd',
+      confirmButtonText: 'Iya, hapus!',
+      cancelButtonText: 'Batal'
     }).then((result) => {
       if (result.isConfirmed) {
         (async () => {
           try {
-            const result = await axios.delete(`/api/delete/category/${id}`, id);
+            const result = await axios.delete(`/api/delete/${router.asPath + id}`, id);
             Swal.fire({
               icon: "success",
               title: result.data.message,
@@ -104,8 +107,12 @@ const TableCategory = ({ data }) => {
                     <TableCell>
                       {item.name}
                     </TableCell>
-                    <TableCell align='center' sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                      <PencilCircle /> &nbsp; | &nbsp;<Delete onClick={() => { handleDelete(item.id) }} sx={{ ":hover": { cursor: 'pointer', color: 'red' } }} />
+                    <TableCell align='center'>
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'row', minWidth: '5rem' }}>
+                        <EditCategory props={item} />
+                        &nbsp; | &nbsp;
+                        <Delete onClick={() => { deleteHandler(item.id) }} sx={{ ":hover": { cursor: 'pointer', color: 'red' } }} />
+                      </div>
                     </TableCell>
                   </TableRow>
                 )

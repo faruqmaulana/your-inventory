@@ -19,6 +19,7 @@ import UserIcon from 'src/layouts/components/UserIcon'
 
 // ** Utils
 import { handleURLQueries } from 'src/@core/layouts/utils'
+import { signIn } from 'next-auth/react'
 
 // ** Styled Components
 const MenuNavLink = styled(ListItemButton)(({ theme }) => ({
@@ -70,8 +71,8 @@ const VerticalNavLink = ({ item, navVisible, toggleNavVisibility }) => {
         <MenuNavLink
           component={'a'}
           className={isNavLinkActive() ? 'active' : ''}
-          {...(item.openInNewTab ? { target: '_blank' } : null)}
           onClick={e => {
+            if (item.title === "Login") return signIn()
             if (item.path === undefined) {
               e.preventDefault()
               e.stopPropagation()

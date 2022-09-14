@@ -1,6 +1,7 @@
 // ** Next Imports
 import Head from 'next/head'
 import { Router } from 'next/router'
+import App from 'next/app'
 
 // ** Loader Import
 import NProgress from 'nprogress'
@@ -27,6 +28,8 @@ import 'react-perfect-scrollbar/dist/css/styles.css'
 // ** Global css styles
 import '../../styles/globals.css'
 
+import { SessionProvider } from 'next-auth/react'
+
 const clientSideEmotionCache = createEmotionCache()
 
 // ** Pace Loader
@@ -43,8 +46,9 @@ if (themeConfig.routingLoader) {
 }
 
 // ** Configure JSS & ClassName
-const App = props => {
+const MyApp = props => {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props
+
 
   // Variables
   const getLayout = Component.getLayout ?? (page => <UserLayout>{page}</UserLayout>)
@@ -61,15 +65,31 @@ const App = props => {
         <meta name='viewport' content='initial-scale=1, width=device-width' />
       </Head>
 
-      <SettingsProvider>
-        <SettingsConsumer>
-          {({ settings }) => {
-            return <ThemeComponent settings={settings}>{getLayout(<Component {...pageProps} />)}</ThemeComponent>
-          }}
-        </SettingsConsumer>
-      </SettingsProvider>
-    </CacheProvider>
+      <SessionProvider
+        session={pageProps.session}
+        refetchInterval={5 * 60}
+        refetchOnWindowFocus={true}>
+        <SettingsProvider>
+          <SettingsConsumer>
+            {({ settings }) => {
+              return <ThemeComponent settings={settings}>{getLayout(<Component {...pageProps} />)}</ThemeComponent>
+            }}
+          </SettingsConsumer>
+        </SettingsProvider>
+      </SessionProvider>
+    </CacheProvider >
   )
 }
 
-export default App
+// MyApp.getInitialProps = async (context) => {
+//   const appProps = await App.getInitialProps(context)
+//   const session = await getSession(context.ctx)
+//   console.log("session from _app :", session)
+
+//   return {
+//     ...appProps,
+//     session
+//   }
+// }
+
+export default MyApp

@@ -1,6 +1,9 @@
 // ** React Imports
 import { useState } from 'react'
 
+// **  NextAuth
+import { getSession, signIn } from 'next-auth/react'
+
 // ** Next Imports
 import Link from 'next/link'
 import { useRouter } from 'next/router'
@@ -38,6 +41,7 @@ import BlankLayout from 'src/@core/layouts/BlankLayout'
 
 // ** Demo Imports
 import FooterIllustrationsV1 from 'src/views/pages/auth/FooterIllustration'
+import { authentication } from 'src/utils/authentication'
 
 // ** Styled Components
 const Card = styled(MuiCard)(({ theme }) => ({
@@ -57,9 +61,28 @@ const FormControlLabel = styled(MuiFormControlLabel)(({ theme }) => ({
   }
 }))
 
+
+export async function getServerSideProps(context) {
+  const session = await getSession(context)
+  console.log("session from login: ", session)
+  if (session) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false
+      }
+    }
+  }
+
+  return {
+    props: { session }
+  }
+}
+
 const LoginPage = () => {
   // ** State
   const [values, setValues] = useState({
+    email: '',
     password: '',
     showPassword: false
   })
@@ -78,6 +101,15 @@ const LoginPage = () => {
 
   const handleMouseDownPassword = event => {
     event.preventDefault()
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    const { email, password } = values;
+
+    const res = await signIn('credentials', { email, password, redirect: false })
+    console.log(res)
+    if (res.status === 200) return router.push('/')
   }
 
   return (
@@ -163,8 +195,17 @@ const LoginPage = () => {
             </Typography>
             <Typography variant='body2'>Please sign-in to your account and start the adventure</Typography>
           </Box>
-          <form noValidate autoComplete='off' onSubmit={e => e.preventDefault()}>
-            <TextField autoFocus fullWidth id='email' label='Email' sx={{ marginBottom: 4 }} />
+          <form method="post" onSubmit={handleSubmit}>
+            <TextField
+              autoFocus
+              fullWidth
+              id='email'
+              label='Email'
+              type='email'
+              value={values.email}
+              onChange={handleChange('email')}
+              sx={{ marginBottom: 4 }}
+            />
             <FormControl fullWidth>
               <InputLabel htmlFor='auth-login-password'>Password</InputLabel>
               <OutlinedInput
@@ -197,10 +238,11 @@ const LoginPage = () => {
             </Box>
             <Button
               fullWidth
+              type='submit'
+              value='Login'
               size='large'
               variant='contained'
               sx={{ marginBottom: 7 }}
-              onClick={() => router.push('/')}
             >
               Login
             </Button>
@@ -213,31 +255,6 @@ const LoginPage = () => {
                   <LinkStyled>Create an account</LinkStyled>
                 </Link>
               </Typography>
-            </Box>
-            <Divider sx={{ my: 5 }}>or</Divider>
-            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <Link href='/' passHref>
-                <IconButton component='a' onClick={e => e.preventDefault()}>
-                  <Facebook sx={{ color: '#497ce2' }} />
-                </IconButton>
-              </Link>
-              <Link href='/' passHref>
-                <IconButton component='a' onClick={e => e.preventDefault()}>
-                  <Twitter sx={{ color: '#1da1f2' }} />
-                </IconButton>
-              </Link>
-              <Link href='/' passHref>
-                <IconButton component='a' onClick={e => e.preventDefault()}>
-                  <Github
-                    sx={{ color: theme => (theme.palette.mode === 'light' ? '#272727' : theme.palette.grey[300]) }}
-                  />
-                </IconButton>
-              </Link>
-              <Link href='/' passHref>
-                <IconButton component='a' onClick={e => e.preventDefault()}>
-                  <Google sx={{ color: '#db4437' }} />
-                </IconButton>
-              </Link>
             </Box>
           </form>
         </CardContent>

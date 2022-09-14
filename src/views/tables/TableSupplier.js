@@ -10,14 +10,15 @@ import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
 import TableContainer from '@mui/material/TableContainer'
 import TablePagination from '@mui/material/TablePagination'
-import { PencilCircle } from 'mdi-material-ui'
+import { Delete } from 'mdi-material-ui'
+import EditSupplier from 'src/views/form/edit/EditSupplier'
 
 const columns = [
   { id: 'no', label: 'No' },
-  { id: 'name', minWidth: 170, label: 'Nama' },
-  { id: 'phone', minWidth: 170, label: 'No. Telp', align: 'center' },
-  { id: 'address', minWidth: 170, label: 'Alamat', align: 'center' },
-  { id: 'aksi', minWidth: 170, label: 'Aksi', align: 'center' },
+  { id: 'name', minWidth: 200, label: 'Nama' },
+  { id: 'phone', minWidth: 200, label: 'No. Telp', align: 'center' },
+  { id: 'address', minWidth: 200, label: 'Alamat', align: 'center' },
+  { id: 'aksi', minWidth: 50, label: 'Aksi', align: 'center' },
 ]
 
 const TableSupplier = ({ data }) => {
@@ -33,6 +34,43 @@ const TableSupplier = ({ data }) => {
   const handleChangeRowsPerPage = event => {
     setRowsPerPage(+event.target.value)
     setPage(0)
+  }
+  function deleteHandler(id) {
+    Swal.fire({
+      title: 'Apakah anda yakin?',
+      text: "Data akan dihapus secara permanen!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      cancelButtonText: 'Batal',
+      confirmButtonText: 'Iya, hapus!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        (async () => {
+          try {
+            const result = await axios.delete(`/api/delete/${router.asPath + id}`, id);
+            Swal.fire({
+              icon: "success",
+              title: result.data.message,
+              showConfirmButton: false,
+              timer: 1800,
+            });
+
+            setTimeout(() => {
+              router.replace(router.asPath);
+            }, 1800);
+
+          } catch (error) {
+            Swal.fire({
+              icon: "error",
+              title: 'Gagal menghapus data!',
+              text: 'Kategori yang anda hapus memiliki relasi dengan data lain, hapus data terkait untuk melanjutkan!',
+            });
+          }
+        })()
+      }
+    })
   }
 
   return (
@@ -69,8 +107,12 @@ const TableSupplier = ({ data }) => {
                     <TableCell align='center'>
                       {supplier.address}
                     </TableCell>
-                    <TableCell align='center' sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                      <PencilCircle /> | <PencilCircle />
+                    <TableCell align='center'>
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'row', minWidth: '5rem' }}>
+                        <EditSupplier props={supplier} />
+                        &nbsp; | &nbsp;
+                        <Delete onClick={() => { handleDelete(item.id) }} sx={{ ":hover": { cursor: 'pointer', color: 'red' } }} />
+                      </div>
                     </TableCell>
                   </TableRow>
                 )

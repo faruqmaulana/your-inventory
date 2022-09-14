@@ -1,6 +1,6 @@
 import prisma from "src/lib/prisma";
 
-export default async function addUsers(req, res) {
+export default async function handler(req, res) {
     if (req.method !== "DELETE") return res.status(405).end();
     const { id } = req.query;
     try {

@@ -3,21 +3,24 @@ import { Grid, Card, CardHeader, Box } from '@mui/material'
 
 // ** Demo Components Imports
 import TableGoods from 'src/views/tables/TableGoods'
-import AddGoods from 'src/pages/form/add/AddGoods'
+import AddGoods from 'src/views/form/add/AddGoods'
 import prisma from 'src/lib/prisma'
 
+import { authentication } from 'src/utils/authentication';
 
-export async function getServerSideProps() {
-  const data = await prisma.goods.findMany({ include: { category: true, unit: true } })
-  const category = await prisma.category.findMany();
-  const unit = await prisma.unit.findMany();
+export function getServerSideProps(context) {
+  return authentication(context, async () => {
+    const data = await prisma.goods.findMany({ include: { category: true, unit: true } })
+    const category = await prisma.category.findMany();
+    const unit = await prisma.unit.findMany();
 
-  return {
-    props: {
-      data,
-      addGoods: { unit, category }
-    },
-  };
+    return {
+      props: {
+        data,
+        addGoods: { unit, category },
+      },
+    };
+  })
 }
 
 const TypographyPage = ({ data, addGoods }) => {
@@ -26,7 +29,7 @@ const TypographyPage = ({ data, addGoods }) => {
       <Grid item xs={12}>
         <Card>
           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <CardHeader title='Data Supplier' titleTypographyProps={{ variant: 'h6' }} />
+            <CardHeader title='Data Barang' titleTypographyProps={{ variant: 'h6' }} />
             <AddGoods data={addGoods}></AddGoods>
           </Box>
           <TableGoods data={data}></TableGoods>

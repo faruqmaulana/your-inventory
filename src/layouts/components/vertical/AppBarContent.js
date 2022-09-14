@@ -1,10 +1,12 @@
 // ** MUI Imports
+import { Skeleton } from '@mui/material'
 import Box from '@mui/material/Box'
 import IconButton from '@mui/material/IconButton'
 import useMediaQuery from '@mui/material/useMediaQuery'
 
 // ** Icons Imports
 import Menu from 'mdi-material-ui/Menu'
+import { useSession } from 'next-auth/react'
 
 // ** Components
 import ModeToggler from 'src/@core/layouts/components/shared-components/ModeToggler'
@@ -13,6 +15,7 @@ import UserDropdown from 'src/@core/layouts/components/shared-components/UserDro
 const AppBarContent = props => {
   // ** Props
   const { hidden, settings, saveSettings, toggleNavVisibility } = props
+  const { data, status } = useSession()
 
   // ** Hook
   const hiddenSm = useMediaQuery(theme => theme.breakpoints.down('sm'))
@@ -29,9 +32,12 @@ const AppBarContent = props => {
             <Menu />
           </IconButton>
         ) : null}
-        <Box sx={{ fontWeight: '800', fontSize: '1rem', padding: '20px', color: 'text.primary' }}>
-          Selamat Datang, Your Name
-        </Box>
+        {data ?
+          <Box sx={{ fontWeight: '800', fontSize: '1rem', padding: '20px', color: 'text.primary' }}>
+            {`Selamat datang, ${data.name}`}
+          </Box> :
+          <Skeleton sx={{ width: '150px' }} />
+        }
       </Box>
       <Box className='actions-right' sx={{ display: 'flex', alignItems: 'center' }}>
         <ModeToggler settings={settings} saveSettings={saveSettings} />

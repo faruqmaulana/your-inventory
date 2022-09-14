@@ -3,18 +3,23 @@ import { Grid, Card, CardHeader, Box } from '@mui/material'
 
 // ** Demo Components Imports
 import TableSupplier from 'src/views/tables/TableSupplier'
-import AddSupplier from 'src/pages/form/add/AddSupplier'
+import AddSupplier from 'src/views/form/add/AddSupplier'
 import prisma from 'src/lib/prisma'
 
+import { authentication } from 'src/utils/authentication'
 
-export async function getServerSideProps() {
-  const data = await prisma.supplier.findMany()
 
-  return {
-    props: {
-      data
-    },
-  };
+export function getServerSideProps(context) {
+  return authentication(context, async () => {
+    const data = await prisma.supplier.findMany()
+
+    return {
+      props: {
+        data
+      },
+    };
+  })
+
 }
 
 const TypographyPage = ({ data }) => {

@@ -48,24 +48,34 @@ export default function AddSupplier() {
   async function handleSubmit(e) {
     e.preventDefault();
     setOpen(false);
-    const result = await axios.post("/api/add/supplier", state);
-    if (result.status === 200) {
+    try {
+      const result = await axios.post(`/api/add/${router.asPath}`, state);
       setState({
         name: '',
         phone: '',
         address: ''
       });
-
       Swal.fire({
         icon: "success",
         title: result.data.message,
+        text: `${result.data.data.name} berhasil ditambahkan kedalam data!`,
         showConfirmButton: false,
-        timer: 1800,
+        timer: 1800
       });
-
       setTimeout(() => {
         router.replace(router.asPath);
       }, 1800);
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: 'Gagal menambahkan data!',
+        text: `${state.name} sudah ada dalam list data.`,
+        showConfirmButton: true,
+      }).then((confirm) => {
+        if (confirm.isConfirmed) {
+          setOpen(true);
+        }
+      });
     }
   }
 

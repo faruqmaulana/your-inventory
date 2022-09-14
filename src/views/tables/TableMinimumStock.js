@@ -11,34 +11,8 @@ import TableContainer from '@mui/material/TableContainer'
 
 import Link from 'next/link'
 
-const rows = [
-  {
-    stock: 27,
-    name: 'Sally Quinn',
-  },
-  {
-    stock: 61,
-    name: 'Margaret Bowers',
-  },
-  {
-    stock: 59,
-    name: 'Minnie Roy',
-  },
-  {
-    stock: 30,
-    name: 'Ralph Leonard',
-  },
-  {
-    stock: 66,
-    name: 'Annie Martin',
-  },
-  {
-    stock: 33,
-    name: 'Adeline Day',
-  },
-]
+const DashboardTable = ({ data }) => {
 
-const DashboardTable = () => {
   return (
     <Card>
       <TableContainer>
@@ -46,27 +20,27 @@ const DashboardTable = () => {
           <TableHead>
             <TableRow>
               <TableCell>Barang</TableCell>
-              <TableCell>Stock</TableCell>
-              <TableCell>Pasok</TableCell>
+              <TableCell align='center'>Stock</TableCell>
+              <TableCell align='right'>Pasok</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map(row => (
-              <TableRow hover key={row.name} sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}>
+            {data.map(minStock => (
+              <TableRow hover key={minStock.id} sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}>
                 <TableCell>
-                  <Typography sx={{ fontWeight: 500, fontSize: '0.875rem !important' }}>{row.name}</Typography>
+                  <Typography sx={{ fontWeight: 500, fontSize: '0.875rem !important' }}>{minStock.name}</Typography>
                 </TableCell>
-                <TableCell>{row.stock}</TableCell>
-                <TableCell>
+                <TableCell align='center'>{minStock.stock}</TableCell>
+                <TableCell align='right' style={{ display: 'flex', alignItems: 'center', justifyContent: 'end' }}>
                   <Box sx={{
                     bgcolor: 'warning.main',
-                    maxWidth: '30px',
+                    width: '30px',
                     borderRadius: '10px',
                     textAlign: 'center'
                   }}>
                     <Link href='#'>
                       <a style={{ color: 'white' }}>
-                        +
+                        <span>+</span>
                       </a>
                     </Link>
                   </Box>

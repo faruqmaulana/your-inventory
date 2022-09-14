@@ -1,5 +1,9 @@
+import axios from 'axios'
+import Swal from 'sweetalert2'
+
 // ** React Imports
 import { useState } from 'react'
+import { useRouter } from 'next/router'
 
 // ** MUI Imports
 import Paper from '@mui/material/Paper'
@@ -10,15 +14,17 @@ import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
 import TableContainer from '@mui/material/TableContainer'
 import TablePagination from '@mui/material/TablePagination'
-import { PencilCircle } from 'mdi-material-ui'
+import { Delete } from 'mdi-material-ui'
+import EditUnit from 'src/views/form/edit/EditUnit'
 
 const columns = [
   { id: 'id', label: 'No' },
   { id: 'name', minWidth: 800, label: 'Satuan' },
-  { id: 'size', label: 'Action', align: 'center' },
+  { id: 'size', label: 'Aksi', align: 'center' },
 ]
 
 const TableBarang = ({ data }) => {
+  const router = useRouter()
 
   // ** States
   const [page, setPage] = useState(0)
@@ -31,6 +37,45 @@ const TableBarang = ({ data }) => {
   const handleChangeRowsPerPage = event => {
     setRowsPerPage(+event.target.value)
     setPage(0)
+  }
+
+  function deleteHandler(id) {
+    Swal.fire({
+      title: 'Apakah anda yakin?',
+      text: "Data akan dihapus secara permanen!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Iya, hapus!',
+      cancelButtonText: 'Batal'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        (async () => {
+          try {
+            const result = await axios.delete(`/api/delete/${router.asPath + id}`, id);
+            Swal.fire({
+              icon: "success",
+              title: result.data.message,
+              showConfirmButton: false,
+              timer: 1800,
+            });
+
+            setTimeout(() => {
+              router.replace(router.asPath);
+            }, 1800);
+
+          } catch (error) {
+            console.log(error)
+            Swal.fire({
+              icon: "error",
+              title: 'Gagal menghapus data!',
+              text: 'Kategori yang anda hapus memiliki relasi dengan data lain, hapus data terkait untuk melanjutkan!',
+            });
+          }
+        })()
+      }
+    })
   }
 
   return (
@@ -61,8 +106,12 @@ const TableBarang = ({ data }) => {
                     <TableCell>
                       {item.name}
                     </TableCell>
-                    <TableCell align='center' sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                      <PencilCircle /> | <PencilCircle />
+                    <TableCell align='center'>
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'row', minWidth: '5rem' }}>
+                        <EditUnit props={item} />
+                        &nbsp; | &nbsp;
+                        <Delete onClick={() => { deleteHandler(item.id) }} sx={{ ":hover": { cursor: 'pointer', color: 'red' } }} />
+                      </div>
                     </TableCell>
                   </TableRow>
                 )

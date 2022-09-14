@@ -9,7 +9,7 @@ import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 import Button from '@mui/material/Button';
-import { Account, Phone, Close, EmailOutline } from 'mdi-material-ui';
+import { Account, Phone, Close, EmailOutline, Key } from 'mdi-material-ui';
 import { InputAdornment, TextField, Radio, RadioGroup, FormControlLabel, FormControl, FormLabel } from '@mui/material';
 
 
@@ -27,7 +27,7 @@ const style = {
     paddingBottom: 10,
 };
 
-export default function AddSupplier() {
+export default function AddUser() {
     const router = useRouter();
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
@@ -36,6 +36,7 @@ export default function AddSupplier() {
     const [state, setState] = useState({
         name: '',
         username: '',
+        password: '',
         email: '',
         phone: '',
         role: 'USER'
@@ -55,8 +56,11 @@ export default function AddSupplier() {
         if (result.status === 200) {
             setState({
                 name: '',
+                username: '',
+                password: '',
+                email: '',
                 phone: '',
-                address: ''
+                role: 'USER'
             });
 
             Swal.fire({
@@ -74,7 +78,7 @@ export default function AddSupplier() {
 
     return (
         <div>
-            <Button onClick={handleOpen} sx={{ bgcolor: 'primary.main', color: 'white', marginRight: 3, ":hover": { bgcolor: 'primary.dark' } }}>+ Tambah Data Supplier</Button>
+            <Button onClick={handleOpen} sx={{ bgcolor: 'primary.main', color: 'white', marginRight: 3, ":hover": { bgcolor: 'primary.dark' } }}>+ Tambah Data User</Button>
             <Modal
                 aria-labelledby="transition-modal-title"
                 aria-describedby="transition-modal-description"
@@ -129,6 +133,24 @@ export default function AddSupplier() {
                             />
                             <TextField
                                 required
+                                value={state.password}
+                                onChange={handleChange}
+                                name="password"
+                                style={{ marginBottom: 20 }}
+                                fullWidth
+                                label='Password'
+                                type="password"
+                                placeholder='Password'
+                                InputProps={{
+                                    startAdornment: (
+                                        <InputAdornment position='start'>
+                                            <Key />
+                                        </InputAdornment>
+                                    )
+                                }}
+                            />
+                            <TextField
+                                required
                                 fullWidth
                                 type='email'
                                 name="email"
@@ -169,7 +191,7 @@ export default function AddSupplier() {
                                     row
                                     aria-labelledby="demo-row-radio-buttons-group-label"
                                     name="role"
-                                    value="USER"
+                                    value={state.role}
                                     onChange={handleChange}
                                 >
                                     <FormControlLabel value="USER" control={<Radio />} label="User" />

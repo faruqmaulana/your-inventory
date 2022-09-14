@@ -4,14 +4,16 @@ import { useState } from 'react';
 import { useRouter } from "next/router";
 
 import * as React from 'react';
-import Backdrop from '@mui/material/Backdrop';
 import Box from '@mui/material/Box';
-import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
+import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
-import { InputAdornment, TextField } from '@mui/material';
+import Backdrop from '@mui/material/Backdrop';
 import { Account, Close } from 'mdi-material-ui';
+import { InputAdornment, TextField } from '@mui/material';
 
+import { fetcher } from 'src/utils/fetcher'
+import { alert } from "src/utils/alert";
 
 const style = {
   position: 'absolute',
@@ -43,22 +45,16 @@ export default function AddCategory() {
     setState({ ...state, [name]: value });
   };
 
-  async function handleSubmit(e) {
+  async function HandleSubmit(e) {
     e.preventDefault();
+
     setOpen(false);
     try {
-      const result = await axios.post("/api/add/category", state);
+      const { title, name } = await fetcher('POST', '/add/category', state)
       setState({
         name: '',
       });
-      Swal.fire({
-        icon: "success",
-        title: result.data.message,
-        text: `${result.data.data.name} berhasil ditambahkan kedalam jenis barang`,
-        showConfirmButton: false,
-        timer: 1800
-      });
-
+      alert(title, `${name} berhasil`, 'barang', false, 1800)
       setTimeout(() => {
         router.replace(router.asPath);
       }, 1800);
@@ -66,8 +62,8 @@ export default function AddCategory() {
       Swal.fire({
         icon: "error",
         title: 'Gagal menambahkan data!',
-        text: `Kategori ${state.name} sudah ada.`,
-        showConfirmButton: true,
+        text: `${state.name} sudah ada dalam list data.`,
+        showConfirmButton: true
       }).then((confirm) => {
         if (confirm.isConfirmed) {
           setOpen(true);
@@ -95,7 +91,7 @@ export default function AddCategory() {
             <Box sx={{ display: 'flex', justifyContent: 'end', paddingTop: 5, marginBottom: 5 }}>
               <Close onClick={handleClose} sx={{ color: 'error.main', ":hover": { cursor: 'pointer' } }} />
             </Box>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={HandleSubmit}>
               <TextField
                 required
                 autoFocus
