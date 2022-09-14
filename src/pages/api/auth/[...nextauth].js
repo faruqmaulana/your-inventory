@@ -22,6 +22,7 @@ export default NextAuth({
       }
     })
   ],
+  secret: process.env.NEXT_PUBLIC_SECRET,
   pages: {
     signIn: '/pages/login',
     error: '/500',
