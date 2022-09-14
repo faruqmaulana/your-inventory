@@ -51,12 +51,13 @@ export async function getServerSideProps(context) {
       minStock,
       incomingItems,
       exitItems,
-      totalCount
+      totalCount,
+      session
     }
   }
 }
 
-const Dashboard = ({ minStock, incomingItems, exitItems, totalCount }) => {
+const Dashboard = ({ minStock, incomingItems, exitItems, totalCount, session }) => {
   return (
     <ApexChartWrapper>
       <Grid container spacing={6}>

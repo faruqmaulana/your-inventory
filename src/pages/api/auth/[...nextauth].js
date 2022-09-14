@@ -1,7 +1,6 @@
 import NextAuth from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import prisma from 'src/lib/prisma';
-import { PrismaAdapter } from "@next-auth/prisma-adapter"
 
 export default NextAuth({
   session: {
@@ -32,6 +31,7 @@ export default NextAuth({
   },
   callbacks: {
     async jwt({ token, user }) {
+
       return { ...token, ...user }
     },
     async session({ session, user, token }) {

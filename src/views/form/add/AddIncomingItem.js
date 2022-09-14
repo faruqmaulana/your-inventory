@@ -36,7 +36,8 @@ const style = {
     paddingBottom: 10,
 };
 
-export default function AddIncomingItem({ data }) {
+export default function AddIncomingItem({ data, session }) {
+    console.log(session)
     const context = useContext(AppContext)
     const router = useRouter();
     const [date, setDate] = useState(new Date())

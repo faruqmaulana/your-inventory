@@ -1,6 +1,7 @@
 // ** Next Imports
 import Head from 'next/head'
 import { Router } from 'next/router'
+import App from 'next/app'
 
 // ** Loader Import
 import NProgress from 'nprogress'
@@ -28,7 +29,7 @@ import 'react-perfect-scrollbar/dist/css/styles.css'
 import '../../styles/globals.css'
 import { AppContext } from 'src/context/app-context'
 import { useState } from 'react'
-import { SessionProvider } from 'next-auth/react'
+import { getSession, SessionProvider } from 'next-auth/react'
 
 const clientSideEmotionCache = createEmotionCache()
 
@@ -46,14 +47,10 @@ if (themeConfig.routingLoader) {
 }
 
 // ** Configure JSS & ClassName
-const App = props => {
+const MyApp = props => {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props
-  const [user, setUser] = useState(1);
 
-  const appContextValue = {
-    user,
-    setUser,
-  };
+  console.log("Got Session: ", pageProps.session);
 
   // Variables
   const getLayout = Component.getLayout ?? (page => <UserLayout>{page}</UserLayout>)
@@ -61,23 +58,26 @@ const App = props => {
   // const session = useSession()
   return (
     <CacheProvider value={emotionCache}>
-      <SessionProvider session={pageProps.session}>
-        <Head>
-          <title>{`${themeConfig.templateName} - Material Design React Admin Template`}</title>
-          <meta
-            name='description'
-            content={`${themeConfig.templateName} – Material Design React Admin Dashboard Template – is the most developer friendly & highly customizable Admin Dashboard Template based on MUI v5.`}
-          />
-          <meta name='keywords' content='Material Design, MUI, Admin Template, React Admin Template' />
-          <meta name='viewport' content='initial-scale=1, width=device-width' />
-        </Head>
+      <Head>
+        <title>{`${themeConfig.templateName} - Material Design React Admin Template`}</title>
+        <meta
+          name='description'
+          content={`${themeConfig.templateName} – Material Design React Admin Dashboard Template – is the most developer friendly & highly customizable Admin Dashboard Template based on MUI v5.`}
+        />
+        <meta name='keywords' content='Material Design, MUI, Admin Template, React Admin Template' />
+        <meta name='viewport' content='initial-scale=1, width=device-width' />
+      </Head>
 
+      <SessionProvider
+        session={pageProps.session}
+        refetchInterval={5 * 60}
+        refetchOnWindowFocus={true}>
         <SettingsProvider>
           <SettingsConsumer>
             {({ settings }) => {
+              // console.log("setting: ", settings)
 
-              return <AppContext.Provider value={appContextValue}><ThemeComponent settings={settings}>{getLayout(<Component {...pageProps} />)}</ThemeComponent></AppContext.Provider>
-
+              return <ThemeComponent settings={settings}>{getLayout(<Component {...pageProps} />)}</ThemeComponent>
             }}
           </SettingsConsumer>
         </SettingsProvider>
@@ -86,4 +86,15 @@ const App = props => {
   )
 }
 
-export default App
+// MyApp.getInitialProps = async (context) => {
+//   const appProps = await App.getInitialProps(context)
+//   const session = await getSession(context.ctx)
+//   console.log("session from _app :", session)
+
+//   return {
+//     ...appProps,
+//     session
+//   }
+// }
+
+export default MyApp
