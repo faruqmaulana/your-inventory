@@ -38,7 +38,6 @@ const style = {
 
 export default function AddIncomingItem({ data, session }) {
     console.log(session)
-    const context = useContext(AppContext)
     const router = useRouter();
     const [date, setDate] = useState(new Date())
     const [open, setOpen] = useState(false);
@@ -54,7 +53,7 @@ export default function AddIncomingItem({ data, session }) {
     const [state, setState] = useState({
         entries: 0,
         stock: '',
-        userId: 1,
+        userId: session ? session.id : 1,
         goodsId: '',
         supplierId: '',
     })
@@ -71,7 +70,6 @@ export default function AddIncomingItem({ data, session }) {
     };
 
     async function handleSubmit(e) {
-        console.log(context.user)
         e.preventDefault();
 
         // parse and set date to payload
@@ -89,11 +87,12 @@ export default function AddIncomingItem({ data, session }) {
             setState({
                 entries: '',
                 stock: 0,
-                userId: 1,
+                userId: session ? session.id : 1,
                 goodsId: '',
                 supplierId: '',
             });
-            alert('Berhasil menambahkan data', `Transaksi berhasil`, null, false, 1800)
+            console.log(result)
+            alert('Berhasil menambahkan data', `Transaksi berhasil`, "Barang Masuk", false, 1800)
             setTimeout(() => {
                 router.replace(router.asPath);
             }, 1800);

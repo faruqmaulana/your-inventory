@@ -21,15 +21,17 @@ import TabSecurity from 'src/views/account-settings/TabSecurity'
 // ** Third Party Styles Imports
 import 'react-datepicker/dist/react-datepicker.css'
 import prisma from 'src/lib/prisma'
+import { authentication } from 'src/utils/authentication'
 
 
-export async function getServerSideProps() {
-  const data = await prisma.user.findUnique({ where: { id: 1 } })
-  console.log(data)
+export function getServerSideProps(context) {
+  return authentication(context, async ({ session }) => {
+    const data = await prisma.user.findUnique({ where: { id: session ? session.id : 1 } })
 
-  return {
-    props: { data }
-  }
+    return {
+      props: { data }
+    }
+  })
 }
 
 const Tab = styled(MuiTab)(({ theme }) => ({

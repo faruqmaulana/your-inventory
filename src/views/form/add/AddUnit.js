@@ -29,7 +29,7 @@ const style = {
 
 export default function AddCategory() {
     const router = useRouter();
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
@@ -45,6 +45,7 @@ export default function AddCategory() {
 
     async function handleSubmit(e) {
         e.preventDefault();
+        console.log("open stats :", open)
         setOpen(false);
         try {
             const result = await axios.post("/api/add/unit", state);

@@ -16,7 +16,8 @@ import ClipboardTextMultiple from 'mdi-material-ui/ClipboardTextMultiple'
 import Account from 'mdi-material-ui/Account'
 
 
-const renderStats = ({ data }) => {
+const renderStats = ({ data, session }) => {
+
   const salesData = [
     {
       stats: data.goodsCount,
@@ -44,6 +45,10 @@ const renderStats = ({ data }) => {
     }
   ]
 
+  if (session.role === 'USER') {
+    delete salesData[3]
+  }
+
   return salesData.map((item, index) => (
     <Grid item xs={12} sm={3} key={index}>
       <Box key={index} sx={{ display: 'flex', alignItems: 'center' }}>
@@ -69,7 +74,7 @@ const renderStats = ({ data }) => {
   ))
 }
 
-const StatisticsCard = ({ data }) => {
+const StatisticsCard = ({ data, session }) => {
 
   return (
     <Card>
@@ -89,7 +94,7 @@ const StatisticsCard = ({ data }) => {
       />
       <CardContent sx={{ pt: theme => `${theme.spacing(3)} !important` }}>
         <Grid container spacing={[5, 0]}>
-          {renderStats({ data })}
+          {renderStats({ data, session })}
         </Grid>
       </CardContent>
     </Card>

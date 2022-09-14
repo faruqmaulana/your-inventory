@@ -5,23 +5,22 @@ import { Grid, Card, CardHeader, Box } from '@mui/material'
 import TableGoods from 'src/views/tables/TableGoods'
 import AddGoods from 'src/views/form/add/AddGoods'
 import prisma from 'src/lib/prisma'
-import { getSession } from 'next-auth/react';
-import { unstable_getServerSession } from 'next-auth';
 
+import { authentication } from 'src/utils/authentication';
 
-export async function getServerSideProps(context) {
+export function getServerSideProps(context) {
+  return authentication(context, async () => {
+    const data = await prisma.goods.findMany({ include: { category: true, unit: true } })
+    const category = await prisma.category.findMany();
+    const unit = await prisma.unit.findMany();
 
-  const data = await prisma.goods.findMany({ include: { category: true, unit: true } })
-  const category = await prisma.category.findMany();
-  const unit = await prisma.unit.findMany();
-  console.log("sessionss", session)
-
-  return {
-    props: {
-      data,
-      addGoods: { unit, category }
-    },
-  };
+    return {
+      props: {
+        data,
+        addGoods: { unit, category },
+      },
+    };
+  })
 }
 
 const TypographyPage = ({ data, addGoods }) => {

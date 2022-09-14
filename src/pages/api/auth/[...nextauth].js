@@ -13,12 +13,9 @@ export default NextAuth({
       credentials: {},
       async authorize(credentials, req) {
         const { email, password } = credentials;
-        console.log("credentials: ", credentials);
 
         const user = await prisma.user.findMany({ where: { email, password } })
         const userIsExist = user.length > 0;
-
-        console.log('users: ', user[0])
         if (!userIsExist) throw new Error("invalid credentials");
         console.log(user[0])
         if (userIsExist) return user[0];

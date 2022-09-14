@@ -1,4 +1,5 @@
 // ** MUI Imports
+import { Skeleton } from '@mui/material'
 import Box from '@mui/material/Box'
 import IconButton from '@mui/material/IconButton'
 import useMediaQuery from '@mui/material/useMediaQuery'
@@ -31,9 +32,12 @@ const AppBarContent = props => {
             <Menu />
           </IconButton>
         ) : null}
-        <Box sx={{ fontWeight: '800', fontSize: '1rem', padding: '20px', color: 'text.primary' }}>
-          {data ? `Selamat datang, ${data.name}` : "Loading..."}
-        </Box>
+        {data ?
+          <Box sx={{ fontWeight: '800', fontSize: '1rem', padding: '20px', color: 'text.primary' }}>
+            {`Selamat datang, ${data.name}`}
+          </Box> :
+          <Skeleton sx={{ width: '150px' }} />
+        }
       </Box>
       <Box className='actions-right' sx={{ display: 'flex', alignItems: 'center' }}>
         <ModeToggler settings={settings} saveSettings={saveSettings} />

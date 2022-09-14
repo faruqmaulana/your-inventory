@@ -27,9 +27,8 @@ import 'react-perfect-scrollbar/dist/css/styles.css'
 
 // ** Global css styles
 import '../../styles/globals.css'
-import { AppContext } from 'src/context/app-context'
-import { useState } from 'react'
-import { getSession, SessionProvider } from 'next-auth/react'
+
+import { SessionProvider } from 'next-auth/react'
 
 const clientSideEmotionCache = createEmotionCache()
 
@@ -50,12 +49,10 @@ if (themeConfig.routingLoader) {
 const MyApp = props => {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props
 
-  console.log("Got Session: ", pageProps.session);
 
   // Variables
   const getLayout = Component.getLayout ?? (page => <UserLayout>{page}</UserLayout>)
 
-  // const session = useSession()
   return (
     <CacheProvider value={emotionCache}>
       <Head>
@@ -75,8 +72,6 @@ const MyApp = props => {
         <SettingsProvider>
           <SettingsConsumer>
             {({ settings }) => {
-              // console.log("setting: ", settings)
-
               return <ThemeComponent settings={settings}>{getLayout(<Component {...pageProps} />)}</ThemeComponent>
             }}
           </SettingsConsumer>

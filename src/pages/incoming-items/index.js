@@ -5,15 +5,20 @@ import { Grid, Card, CardHeader, Box } from '@mui/material'
 import TableIncomingItems from 'src/views/tables/TableIncomingItems'
 import AddIncomingItem from 'src/views/form/add/AddIncomingItem'
 import prisma from 'src/lib/prisma'
-import { unstable_getServerSession } from 'next-auth';
 import { getSession } from 'next-auth/react';
 
 
 export async function getServerSideProps(context) {
 
-  // const session = await getSession(context);
-
-  // console.log("sessionss", session)
+  const session = await getSession(context);
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/pages/login',
+        permanent: false
+      }
+    }
+  }
 
   const data = await prisma.incomingItem.findMany({ include: { goods: true, user: true, supplier: true } })
   const supplier = await prisma.supplier.findMany();
@@ -23,13 +28,12 @@ export async function getServerSideProps(context) {
     props: {
       data,
       addIncomingItems: { goods, supplier },
-
-      // session
+      session
     },
   };
 }
 
-const TypographyPage = ({ data, addIncomingItems }) => {
+const TypographyPage = ({ data, addIncomingItems, session }) => {
 
   return (
     <Grid container spacing={6}>
@@ -37,7 +41,7 @@ const TypographyPage = ({ data, addIncomingItems }) => {
         <Card>
           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <CardHeader title='Data Barang Masuk' titleTypographyProps={{ variant: 'h6' }} />
-            {/* <AddIncomingItem data={addIncomingItems} session={session}></AddIncomingItem> */}
+            <AddIncomingItem data={addIncomingItems} session={session}></AddIncomingItem>
           </Box>
           <TableIncomingItems data={data}></TableIncomingItems>
         </Card>

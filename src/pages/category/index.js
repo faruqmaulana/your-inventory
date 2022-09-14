@@ -5,16 +5,19 @@ import { Grid, Card, CardHeader, Box } from '@mui/material'
 import TableCategory from 'src/views/tables/TableCategory'
 import AddCategory from 'src/views/form/add/AddCategory'
 import prisma from 'src/lib/prisma'
+import { authentication } from 'src/utils/authentication'
 
 
-export async function getServerSideProps() {
-  const data = await prisma.category.findMany()
+export function getServerSideProps(context) {
+  return authentication(context, async () => {
+    const data = await prisma.category.findMany()
 
-  return {
-    props: {
-      data
-    },
-  };
+    return {
+      props: {
+        data
+      },
+    };
+  })
 }
 
 const TypographyPage = ({ data }) => {

@@ -36,7 +36,7 @@ const style = {
     paddingBottom: 10,
 };
 
-export default function AddExitItems({ data }) {
+export default function AddExitItems({ data, session }) {
     const context = useContext(AppContext)
     const router = useRouter();
     const [date, setDate] = useState(new Date())
@@ -53,7 +53,7 @@ export default function AddExitItems({ data }) {
     const [state, setState] = useState({
         amount_out: 0,
         stock: '',
-        userId: 1,
+        userId: session ? session.id : 1,
         goodsId: '',
     })
 
@@ -88,7 +88,7 @@ export default function AddExitItems({ data }) {
             setState({
                 amount_out: '',
                 stock: 0,
-                userId: 1,
+                userId: session ? session.id : 1,
                 goodsId: '',
             });
             alert('Berhasil menambahkan data', `Transaksi berhasil`, null, false, 1800)

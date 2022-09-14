@@ -48,9 +48,7 @@ export default function AddCategory() {
   async function HandleSubmit(e) {
     e.preventDefault();
 
-    // setOpen(false);
-    console.log(state)
-
+    setOpen(false);
     try {
       const { title, name } = await fetcher('POST', '/add/category', state)
       setState({
@@ -65,7 +63,7 @@ export default function AddCategory() {
         icon: "error",
         title: 'Gagal menambahkan data!',
         text: `${state.name} sudah ada dalam list data.`,
-        showConfirmButton: true,
+        showConfirmButton: true
       }).then((confirm) => {
         if (confirm.isConfirmed) {
           setOpen(true);

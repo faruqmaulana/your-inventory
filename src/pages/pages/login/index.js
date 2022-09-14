@@ -2,7 +2,7 @@
 import { useState } from 'react'
 
 // **  NextAuth
-import { signIn } from 'next-auth/react'
+import { getSession, signIn } from 'next-auth/react'
 
 // ** Next Imports
 import Link from 'next/link'
@@ -41,6 +41,7 @@ import BlankLayout from 'src/@core/layouts/BlankLayout'
 
 // ** Demo Imports
 import FooterIllustrationsV1 from 'src/views/pages/auth/FooterIllustration'
+import { authentication } from 'src/utils/authentication'
 
 // ** Styled Components
 const Card = styled(MuiCard)(({ theme }) => ({
@@ -59,6 +60,24 @@ const FormControlLabel = styled(MuiFormControlLabel)(({ theme }) => ({
     color: theme.palette.text.secondary
   }
 }))
+
+
+export async function getServerSideProps(context) {
+  const session = await getSession(context)
+  console.log("session from login: ", session)
+  if (session) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false
+      }
+    }
+  }
+
+  return {
+    props: { session }
+  }
+}
 
 const LoginPage = () => {
   // ** State
@@ -89,7 +108,8 @@ const LoginPage = () => {
     const { email, password } = values;
 
     const res = await signIn('credentials', { email, password, redirect: false })
-    if (res.error === null) return router.push('/')
+    console.log(res)
+    if (res.status === 200) return router.push('/')
   }
 
   return (
@@ -235,31 +255,6 @@ const LoginPage = () => {
                   <LinkStyled>Create an account</LinkStyled>
                 </Link>
               </Typography>
-            </Box>
-            <Divider sx={{ my: 5 }}>or</Divider>
-            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <Link href='/' passHref>
-                <IconButton component='a' onClick={e => e.preventDefault()}>
-                  <Facebook sx={{ color: '#497ce2' }} />
-                </IconButton>
-              </Link>
-              <Link href='/' passHref>
-                <IconButton component='a' onClick={e => e.preventDefault()}>
-                  <Twitter sx={{ color: '#1da1f2' }} />
-                </IconButton>
-              </Link>
-              <Link href='/' passHref>
-                <IconButton component='a' onClick={e => e.preventDefault()}>
-                  <Github
-                    sx={{ color: theme => (theme.palette.mode === 'light' ? '#272727' : theme.palette.grey[300]) }}
-                  />
-                </IconButton>
-              </Link>
-              <Link href='/' passHref>
-                <IconButton component='a' onClick={e => e.preventDefault()}>
-                  <Google sx={{ color: '#db4437' }} />
-                </IconButton>
-              </Link>
             </Box>
           </form>
         </CardContent>
