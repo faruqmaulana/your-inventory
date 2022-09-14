@@ -14,49 +14,49 @@ import prisma from 'src/lib/prisma'
 import { getSession, signIn } from 'next-auth/react'
 import { authentication } from 'src/utils/authentication'
 
-export async function getServerSideProps(context) {
+export function getServerSideProps(context) {
   //authentication
-  const session = await getSession(context)
+  return authentication(context, async ({ session }) => {
+    //get count data
+    const getGoodsCount = await prisma.goods.findMany()
+    const getSupplierCount = await prisma.supplier.count()
+    const getUserCount = await prisma.user.count()
 
-  //get count data
-  const getGoodsCount = await prisma.goods.findMany()
-  const getSupplierCount = await prisma.supplier.count()
-  const getUserCount = await prisma.user.count()
+    // get stock total 
+    const getStockTotal = getGoodsCount.map(data => { return data.stock })
+    const stockCount = getStockTotal.reduce((partialSum, a) => partialSum + a, 0);
 
-  // get stock total 
-  const getStockTotal = getGoodsCount.map(data => { return data.stock })
-  const stockCount = getStockTotal.reduce((partialSum, a) => partialSum + a, 0);
+    const minStock = await prisma.goods.findMany({ where: { stock: 0 }, orderBy: { id: 'desc' }, take: 5 })
 
-  const minStock = await prisma.goods.findMany({ where: { stock: 0 }, orderBy: { id: 'desc' }, take: 5 })
+    const incomingItems = await prisma.incomingItem.findMany({
+      include: { goods: true },
+      orderBy: { date: 'desc' },
+      take: 5
+    })
 
-  const incomingItems = await prisma.incomingItem.findMany({
-    include: { goods: true },
-    orderBy: { date: 'desc' },
-    take: 5
+    const exitItems = await prisma.exitItem.findMany({
+      include: { goods: true },
+      orderBy: { date: 'desc' },
+      take: 5
+    })
+
+    const totalCount = {
+      goodsCount: getGoodsCount.length,
+      supplierCount: getSupplierCount,
+      userCount: getUserCount,
+      stockCount
+    }
+
+    return {
+      props: {
+        minStock,
+        incomingItems,
+        exitItems,
+        totalCount,
+        session
+      },
+    };
   })
-
-  const exitItems = await prisma.exitItem.findMany({
-    include: { goods: true },
-    orderBy: { date: 'desc' },
-    take: 5
-  })
-
-  const totalCount = {
-    goodsCount: getGoodsCount.length,
-    supplierCount: getSupplierCount,
-    userCount: getUserCount,
-    stockCount
-  }
-
-  return {
-    props: {
-      minStock,
-      incomingItems,
-      exitItems,
-      totalCount,
-      session
-    },
-  };
 }
 
 const Dashboard = ({ minStock, incomingItems, exitItems, totalCount, session }) => {
