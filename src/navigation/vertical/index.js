@@ -1,5 +1,4 @@
 // ** Icon imports
-import Login from 'mdi-material-ui/Login'
 import Folder from 'mdi-material-ui/Folder'
 import Account from 'mdi-material-ui/Account'
 import Database from 'mdi-material-ui/Database'
@@ -8,7 +7,6 @@ import HomeOutline from 'mdi-material-ui/HomeOutline'
 import AccountGroup from 'mdi-material-ui/AccountGroup'
 import FolderUpload from 'mdi-material-ui/FolderUpload'
 import FolderDownload from 'mdi-material-ui/FolderDownload'
-import AccountPlusOutline from 'mdi-material-ui/AccountPlusOutline'
 
 const navigation = () => {
   return [
@@ -60,21 +58,7 @@ const navigation = () => {
       title: 'Data Users',
       icon: AccountGroup,
       path: '/users'
-    },
-
-    // {
-    //   sectionTitle: 'Pages'
-    // },
-    // {
-    //   title: 'Login',
-    //   icon: Login,
-    //   path: '/pages/login'
-    // },
-    // {
-    //   title: 'Register',
-    //   icon: AccountPlusOutline,
-    //   path: '/pages/register'
-    // },
+    }
   ]
 }
 

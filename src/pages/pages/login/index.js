@@ -1,5 +1,5 @@
 // ** React Imports
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 
 // **  NextAuth
 import { getSession, signIn } from 'next-auth/react'
@@ -41,7 +41,7 @@ import BlankLayout from 'src/@core/layouts/BlankLayout'
 
 // ** Demo Imports
 import FooterIllustrationsV1 from 'src/views/pages/auth/FooterIllustration'
-import { authentication } from 'src/utils/authentication'
+import { CircularProgress } from '@mui/material'
 
 // ** Styled Components
 const Card = styled(MuiCard)(({ theme }) => ({
@@ -87,6 +87,11 @@ const LoginPage = () => {
     showPassword: false
   })
 
+  const [state, setState] = useState({
+    loading: false,
+    loginStatus: 'Login'
+  })
+
   // ** Hook
   const theme = useTheme()
   const router = useRouter()
@@ -105,11 +110,20 @@ const LoginPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    setState({ ...state, loading: true })
     const { email, password } = values;
-
     const res = await signIn('credentials', { email, password, redirect: false })
     console.log(res)
-    if (res.status === 200) return router.push('/')
+    if (res.ok === true) {
+      console.log(state.loading)
+      setState({ ...state, loginStatus: 'Success...' })
+
+      return router.push('/')
+    }
+
+    if (res.ok === false) {
+      setState({ ...state, loading: false })
+    }
   }
 
   return (
@@ -197,6 +211,8 @@ const LoginPage = () => {
           </Box>
           <form method="post" onSubmit={handleSubmit}>
             <TextField
+
+              // required
               autoFocus
               fullWidth
               id='email'
@@ -209,6 +225,8 @@ const LoginPage = () => {
             <FormControl fullWidth>
               <InputLabel htmlFor='auth-login-password'>Password</InputLabel>
               <OutlinedInput
+
+                // required
                 label='Password'
                 value={values.password}
                 id='auth-login-password'
@@ -232,9 +250,9 @@ const LoginPage = () => {
               sx={{ mb: 4, display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'space-between' }}
             >
               <FormControlLabel control={<Checkbox />} label='Remember Me' />
-              <Link passHref href='/'>
+              {/* <Link passHref href='/'>
                 <LinkStyled onClick={e => e.preventDefault()}>Forgot Password?</LinkStyled>
-              </Link>
+              </Link> */}
             </Box>
             <Button
               fullWidth
@@ -242,9 +260,10 @@ const LoginPage = () => {
               value='Login'
               size='large'
               variant='contained'
+              disabled={state.loading}
               sx={{ marginBottom: 7 }}
             >
-              Login
+              {state.loading ? <CircularProgress size={26} sx={{ color: '#312D4B' }} /> : state.loginStatus}
             </Button>
             <Box sx={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center' }}>
               <Typography variant='body2' sx={{ marginRight: 2 }}>
