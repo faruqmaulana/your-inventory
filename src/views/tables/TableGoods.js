@@ -48,9 +48,10 @@ const TableBarang = ({ data }) => {
       title: 'Apakah anda yakin?',
       text: "Data akan dihapus secara permanen!",
       icon: 'warning',
+      iconColor: '#9155fd',
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
+      confirmButtonColor: '#312D4B',
+      cancelButtonColor: '#9155fd',
       confirmButtonText: 'Iya, hapus!',
       cancelButtonText: 'Batal'
     }).then((result) => {

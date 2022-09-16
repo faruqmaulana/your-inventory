@@ -127,13 +127,15 @@ const LoginPage = () => {
 
   return (
     <Box className='content-center' sx={{ display: 'flex', flexDirection: 'column' }}>
-      <Card sx={{ zIndex: 1, mb: 5, backgroundColor: 'transparent', boxShadow: 'none' }}>
-        <Fade in={state.alert}>
-          <Alert severity={state.isError ? 'error' : 'success'} sx={{ width: '100%' }}>
-            {!state.isError ? 'Login Successfully!' : 'Wrong email and password!'}
-          </Alert>
-        </Fade>
-      </Card>
+      {state.alert && (
+        <Card sx={{ zIndex: 1, mb: 5, backgroundColor: 'transparent', boxShadow: 'none' }}>
+          <Fade in={state.alert} >
+            <Alert severity={state.isError ? 'error' : 'success'} sx={{ width: '100%' }}>
+              {!state.isError ? 'Login Successfully!' : 'Wrong email and password!'}
+            </Alert>
+          </Fade>
+        </Card>
+      )}
       <Card sx={{ zIndex: 1 }}>
         <CardContent sx={{ padding: theme => `${theme.spacing(12, 9, 7)} !important` }}>
           <Box sx={{ mb: 8, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>

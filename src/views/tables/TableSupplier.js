@@ -1,16 +1,19 @@
 // ** React Imports
+import axios from 'axios'
+import Swal from 'sweetalert2'
 import { useState } from 'react'
+import { useRouter } from 'next/router'
 
 // ** MUI Imports
 import Paper from '@mui/material/Paper'
 import Table from '@mui/material/Table'
+import { Delete } from 'mdi-material-ui'
 import TableRow from '@mui/material/TableRow'
 import TableHead from '@mui/material/TableHead'
 import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
 import TableContainer from '@mui/material/TableContainer'
 import TablePagination from '@mui/material/TablePagination'
-import { Delete } from 'mdi-material-ui'
 import EditSupplier from 'src/views/form/edit/EditSupplier'
 
 const columns = [
@@ -22,6 +25,7 @@ const columns = [
 ]
 
 const TableSupplier = ({ data }) => {
+  const router = useRouter()
 
   // ** States
   const [page, setPage] = useState(0)
@@ -111,7 +115,7 @@ const TableSupplier = ({ data }) => {
                       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'row', minWidth: '5rem' }}>
                         <EditSupplier props={supplier} />
                         &nbsp; | &nbsp;
-                        <Delete onClick={() => { handleDelete(item.id) }} sx={{ ":hover": { cursor: 'pointer', color: 'red' } }} />
+                        <Delete onClick={() => { deleteHandler(supplier.id) }} sx={{ ":hover": { cursor: 'pointer', color: 'red' } }} />
                       </div>
                     </TableCell>
                   </TableRow>
