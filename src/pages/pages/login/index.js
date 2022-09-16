@@ -1,5 +1,5 @@
 // ** React Imports
-import { useRef, useState } from 'react'
+import { useState } from 'react'
 
 // **  NextAuth
 import { getSession, signIn } from 'next-auth/react'
@@ -11,7 +11,6 @@ import { useRouter } from 'next/router'
 // ** MUI Components
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
-import Divider from '@mui/material/Divider'
 import Checkbox from '@mui/material/Checkbox'
 import TextField from '@mui/material/TextField'
 import InputLabel from '@mui/material/InputLabel'
@@ -26,10 +25,6 @@ import InputAdornment from '@mui/material/InputAdornment'
 import MuiFormControlLabel from '@mui/material/FormControlLabel'
 
 // ** Icons Imports
-import Google from 'mdi-material-ui/Google'
-import Github from 'mdi-material-ui/Github'
-import Twitter from 'mdi-material-ui/Twitter'
-import Facebook from 'mdi-material-ui/Facebook'
 import EyeOutline from 'mdi-material-ui/EyeOutline'
 import EyeOffOutline from 'mdi-material-ui/EyeOffOutline'
 
@@ -41,7 +36,8 @@ import BlankLayout from 'src/@core/layouts/BlankLayout'
 
 // ** Demo Imports
 import FooterIllustrationsV1 from 'src/views/pages/auth/FooterIllustration'
-import { CircularProgress } from '@mui/material'
+import { Alert, CircularProgress, Fade } from '@mui/material'
+import Snackbar from 'src/@core/theme/overrides/snackbar'
 
 // ** Styled Components
 const Card = styled(MuiCard)(({ theme }) => ({
@@ -64,7 +60,6 @@ const FormControlLabel = styled(MuiFormControlLabel)(({ theme }) => ({
 
 export async function getServerSideProps(context) {
   const session = await getSession(context)
-  console.log("session from login: ", session)
   if (session) {
     return {
       redirect: {
@@ -89,7 +84,9 @@ const LoginPage = () => {
 
   const [state, setState] = useState({
     loading: false,
-    loginStatus: 'Login'
+    loginStatus: 'Login',
+    isError: false,
+    alert: false
   })
 
   // ** Hook
@@ -115,19 +112,28 @@ const LoginPage = () => {
     const res = await signIn('credentials', { email, password, redirect: false })
     console.log(res)
     if (res.ok === true) {
-      console.log(state.loading)
-      setState({ ...state, loginStatus: 'Success...' })
+      setState({ ...state, loginStatus: 'Success...', isError: false, alert: true })
 
       return router.push('/')
     }
 
     if (res.ok === false) {
-      setState({ ...state, loading: false })
+      setState({ ...state, loading: false, isError: true, alert: true })
+      setTimeout(() => {
+        setState({ ...state, isError: true, alert: false })
+      }, 5000)
     }
   }
 
   return (
-    <Box className='content-center'>
+    <Box className='content-center' sx={{ display: 'flex', flexDirection: 'column' }}>
+      <Card sx={{ zIndex: 1, mb: 5, backgroundColor: 'transparent', boxShadow: 'none' }}>
+        <Fade in={state.alert}>
+          <Alert severity={state.isError ? 'error' : 'success'} sx={{ width: '100%' }}>
+            {!state.isError ? 'Login Successfully!' : 'Wrong email and password!'}
+          </Alert>
+        </Fade>
+      </Card>
       <Card sx={{ zIndex: 1 }}>
         <CardContent sx={{ padding: theme => `${theme.spacing(12, 9, 7)} !important` }}>
           <Box sx={{ mb: 8, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -279,7 +285,7 @@ const LoginPage = () => {
         </CardContent>
       </Card>
       <FooterIllustrationsV1 />
-    </Box>
+    </Box >
   )
 }
 LoginPage.getLayout = page => <BlankLayout>{page}</BlankLayout>

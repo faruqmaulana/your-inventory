@@ -4,20 +4,22 @@ import { useState } from 'react';
 import { useRouter } from "next/router";
 
 import * as React from 'react';
-import Backdrop from '@mui/material/Backdrop';
 import Box from '@mui/material/Box';
-import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
+import Modal from '@mui/material/Modal';
+import MuiCard from '@mui/material/Card'
 import Button from '@mui/material/Button';
-import { InputAdornment, TextField } from '@mui/material';
+import Backdrop from '@mui/material/Backdrop';
 import { Account, Close } from 'mdi-material-ui';
+import { InputAdornment, styled, TextField } from '@mui/material';
+
 
 
 const style = {
     position: 'absolute',
     top: '50%',
     left: '50%',
-    width: '70%',
+    width: 400,
     transform: 'translate(-50%, -50%)',
     bgcolor: 'background.paper',
     borderRadius: 2,
@@ -26,6 +28,10 @@ const style = {
     paddingLeft: 10,
     paddingBottom: 10,
 };
+
+const Card = styled(MuiCard)(({ theme }) => ({
+    [theme.breakpoints.up('sm')]: { width: '28rem' }
+}))
 
 export default function AddCategory() {
     const router = useRouter();
