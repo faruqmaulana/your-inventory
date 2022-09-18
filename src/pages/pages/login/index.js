@@ -37,7 +37,6 @@ import BlankLayout from 'src/@core/layouts/BlankLayout'
 // ** Demo Imports
 import FooterIllustrationsV1 from 'src/views/pages/auth/FooterIllustration'
 import { Alert, CircularProgress, Fade } from '@mui/material'
-import Snackbar from 'src/@core/theme/overrides/snackbar'
 
 // ** Styled Components
 const Card = styled(MuiCard)(({ theme }) => ({
@@ -110,7 +109,6 @@ const LoginPage = () => {
     setState({ ...state, loading: true })
     const { email, password } = values;
     const res = await signIn('credentials', { email, password, redirect: false })
-    console.log(res)
     if (res.ok === true) {
       setState({ ...state, loginStatus: 'Success...', isError: false, alert: true })
 
@@ -219,8 +217,7 @@ const LoginPage = () => {
           </Box>
           <form method="post" onSubmit={handleSubmit}>
             <TextField
-
-              // required
+              required
               autoFocus
               fullWidth
               id='email'
@@ -233,8 +230,7 @@ const LoginPage = () => {
             <FormControl fullWidth>
               <InputLabel htmlFor='auth-login-password'>Password</InputLabel>
               <OutlinedInput
-
-                // required
+                required
                 label='Password'
                 value={values.password}
                 id='auth-login-password'

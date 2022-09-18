@@ -7,7 +7,6 @@ import Link from 'next/link'
 // ** MUI Components
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
-import Divider from '@mui/material/Divider'
 import Checkbox from '@mui/material/Checkbox'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
@@ -22,10 +21,6 @@ import InputAdornment from '@mui/material/InputAdornment'
 import MuiFormControlLabel from '@mui/material/FormControlLabel'
 
 // ** Icons Imports
-import Google from 'mdi-material-ui/Google'
-import Github from 'mdi-material-ui/Github'
-import Twitter from 'mdi-material-ui/Twitter'
-import Facebook from 'mdi-material-ui/Facebook'
 import EyeOutline from 'mdi-material-ui/EyeOutline'
 import EyeOffOutline from 'mdi-material-ui/EyeOffOutline'
 
@@ -36,7 +31,12 @@ import themeConfig from 'src/configs/themeConfig'
 import BlankLayout from 'src/@core/layouts/BlankLayout'
 
 // ** Demo Imports
+import axios from 'axios'
 import FooterIllustrationsV1 from 'src/views/pages/auth/FooterIllustration'
+
+import { useRouter } from 'next/router'
+import { Alert, CircularProgress, Fade } from '@mui/material'
+
 
 // ** Styled Components
 const Card = styled(MuiCard)(({ theme }) => ({
@@ -60,6 +60,21 @@ const FormControlLabel = styled(MuiFormControlLabel)(({ theme }) => ({
 
 const RegisterPage = () => {
   // ** States
+  const [state, setState] = useState({
+    name: '',
+    username: '',
+    password: '',
+    email: '',
+    role: 'USER'
+  })
+
+  const [ui, setUi] = useState({
+    loading: false,
+    loginStatus: 'Login',
+    isError: false,
+    alert: false
+  })
+
   const [values, setValues] = useState({
     password: '',
     showPassword: false
@@ -67,6 +82,7 @@ const RegisterPage = () => {
 
   // ** Hook
   const theme = useTheme()
+  const router = useRouter()
 
   const handleChange = prop => event => {
     setValues({ ...values, [prop]: event.target.value })
@@ -80,8 +96,52 @@ const RegisterPage = () => {
     event.preventDefault()
   }
 
+  const handleChanges = (e) => {
+    const name = e.target.name;
+    const value = e.target.value;
+    setState({ ...state, [name]: value });
+  };
+
+  async function handleSubmit(e) {
+    e.preventDefault()
+    setUi({ ...ui, loading: true })
+    try {
+      const payload = { ...state, password: values.password }
+      await axios.post(`/api/add/users`, payload);
+      setUi({ ...ui, loginStatus: 'Success...', isError: false, alert: true })
+
+      setState({
+        name: '',
+        username: '',
+        password: '',
+        email: '',
+        phone: '',
+        role: 'USER'
+      });
+
+      setTimeout(() => {
+        router.replace("/pages/login");
+      }, 1800);
+    } catch (error) {
+      setUi({ ...ui, loading: false, isError: true, alert: true })
+      setTimeout(() => {
+        setUi({ ...ui, isError: true, alert: false })
+      }, 5000)
+    }
+  }
+
+
   return (
-    <Box className='content-center'>
+    <Box className='content-center' sx={{ display: 'flex', flexDirection: 'column' }}>
+      {ui.alert && (
+        <Card sx={{ zIndex: 1, mb: 5, backgroundColor: 'transparent', boxShadow: 'none' }}>
+          <Fade in={ui.alert} >
+            <Alert severity={ui.isError ? 'error' : 'success'} sx={{ width: '100%' }}>
+              {!ui.isError ? 'Success!' : 'Something went wrong!'}
+            </Alert>
+          </Fade>
+        </Card>
+      )}
       <Card sx={{ zIndex: 1 }}>
         <CardContent sx={{ padding: theme => `${theme.spacing(12, 9, 7)} !important` }}>
           <Box sx={{ mb: 8, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -163,15 +223,17 @@ const RegisterPage = () => {
             </Typography>
             <Typography variant='body2'>Make your app management easy and fun!</Typography>
           </Box>
-          <form noValidate autoComplete='off' onSubmit={e => e.preventDefault()}>
-            <TextField autoFocus fullWidth id='username' label='Username' sx={{ marginBottom: 4 }} />
-            <TextField fullWidth type='email' label='Email' sx={{ marginBottom: 4 }} />
+          <form autoComplete='off' onSubmit={handleSubmit}>
+            <TextField autoFocus fullWidth name='name' onChange={handleChanges} value={state.name} label='Name' sx={{ marginBottom: 4 }} />
+            <TextField autoFocus fullWidth name='username' onChange={handleChanges} value={state.username} label='Username' sx={{ marginBottom: 4 }} />
+            <TextField fullWidth type='email' name='email' onChange={handleChanges} value={state.email} label='Email' sx={{ marginBottom: 4 }} />
             <FormControl fullWidth>
-              <InputLabel htmlFor='auth-register-password'>Password</InputLabel>
+              <InputLabel htmlFor='password'>Password</InputLabel>
               <OutlinedInput
+                required
                 label='Password'
                 value={values.password}
-                id='auth-register-password'
+                id='auth-login-password'
                 onChange={handleChange('password')}
                 type={values.showPassword ? 'text' : 'password'}
                 endAdornment={
@@ -182,14 +244,14 @@ const RegisterPage = () => {
                       onMouseDown={handleMouseDownPassword}
                       aria-label='toggle password visibility'
                     >
-                      {values.showPassword ? <EyeOutline fontSize='small' /> : <EyeOffOutline fontSize='small' />}
+                      {values.showPassword ? <EyeOutline /> : <EyeOffOutline />}
                     </IconButton>
                   </InputAdornment>
                 }
               />
             </FormControl>
             <FormControlLabel
-              control={<Checkbox />}
+              control={<Checkbox required />}
               label={
                 <Fragment>
                   <span>I agree to </span>
@@ -199,8 +261,8 @@ const RegisterPage = () => {
                 </Fragment>
               }
             />
-            <Button fullWidth size='large' type='submit' variant='contained' sx={{ marginBottom: 7 }}>
-              Sign up
+            <Button fullWidth size='large' type='submit' variant='contained' sx={{ marginBottom: 7 }} disabled={ui.loading}>
+              {ui.loading ? <CircularProgress size={26} sx={{ color: '#312D4B' }} /> : ui.loginStatus}
             </Button>
             <Box sx={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center' }}>
               <Typography variant='body2' sx={{ marginRight: 2 }}>
