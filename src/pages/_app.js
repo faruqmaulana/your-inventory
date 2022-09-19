@@ -81,15 +81,4 @@ const MyApp = props => {
   )
 }
 
-// MyApp.getInitialProps = async (context) => {
-//   const appProps = await App.getInitialProps(context)
-//   const session = await getSession(context.ctx)
-//   console.log("session from _app :", session)
-
-//   return {
-//     ...appProps,
-//     session
-//   }
-// }
-
 export default MyApp
