@@ -144,6 +144,7 @@ export default function EditUser({ props }) {
               />
               <TextField
                 required
+                disabled
                 fullWidth
                 type='email'
                 name="email"

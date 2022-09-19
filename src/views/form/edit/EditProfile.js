@@ -85,6 +85,7 @@ export default function EditProfile({ props }) {
           <Grid item xs={12} sm={6}>
             <TextField
               required
+              disabled
               fullWidth
               name="email"
               type='email'

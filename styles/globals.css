@@ -46,6 +46,28 @@ code[class*='language-'] {
   color: #9155fd;
 }
 
+.modal-form {
+  width: 90%;
+}
+
+@media (min-width: 400px) {
+  .modal-form {
+    width: 400px;
+  }
+}
+
+@media (min-width: 650px) {
+  .modal-form {
+    width: 600px;
+  }
+}
+
+@media (min-width: 1080px) {
+  .modal-form {
+    width: 800px;
+  }
+}
+
 .modal {
   width: 90%;
 }

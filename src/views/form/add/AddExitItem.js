@@ -26,7 +26,6 @@ const style = {
     position: 'absolute',
     top: '50%',
     left: '50%',
-    width: '70%',
     transform: 'translate(-50%, -50%)',
     bgcolor: 'background.paper',
     borderRadius: 2,
@@ -70,7 +69,6 @@ export default function AddExitItems({ data, session }) {
     };
 
     async function handleSubmit(e) {
-        console.log(context.user)
         e.preventDefault();
 
         // parse and set date to payload
@@ -136,7 +134,7 @@ export default function AddExitItems({ data, session }) {
                 }}
             >
                 <Fade in={open}>
-                    <Box sx={style}>
+                    <Box sx={style} className='modal-form'>
                         <Box sx={{ display: 'flex', justifyContent: 'end', paddingTop: 5, marginBottom: 5 }}>
                             <Close onClick={handleClose} sx={{ color: 'error.main', ":hover": { cursor: 'pointer' } }} />
                         </Box>
