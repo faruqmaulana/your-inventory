@@ -6,6 +6,7 @@ export default async function handler(req, res) {
   try {
     const user = await prisma.user.findUnique({ where: { id: data.id } });
     if (data.currentPassword !== user.password) return res.status(403).end()
+    if (user.email === 'user@gmail.com' || user.email === 'admin@gmail.com') return res.status(401).end()
 
     delete data.currentPassword;
     await prisma.user.update({ where: { id: data.id }, data });

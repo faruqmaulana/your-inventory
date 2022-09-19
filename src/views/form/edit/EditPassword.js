@@ -6,7 +6,7 @@ import { useRouter } from "next/router";
 // ** MUI Imports
 import Grid from '@mui/material/Grid'
 import Button from '@mui/material/Button'
-import { Alert, Box, Card, CardContent, Fade, FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput } from "@mui/material";
+import { Alert, Box, CardContent, Fade, FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput } from "@mui/material";
 import { EyeOffOutline, EyeOutline } from "mdi-material-ui";
 
 export default function EditPassword({ props }) {
@@ -74,7 +74,6 @@ export default function EditPassword({ props }) {
     if (values.newPassword !== values.confirmNewPassword) return setValues({ ...values, alert: true })
     try {
       const result = await axios.put(`/api/update/password`, state);
-
       setValues({
         ...values,
         newPassword: '',
@@ -93,12 +92,22 @@ export default function EditPassword({ props }) {
         router.replace(router.asPath);
       }, 1800);
     } catch (error) {
-      Swal.fire({
-        icon: "error",
-        title: 'Gagal memperbarui data!',
-        text: `kata sandi tidak cocok`,
-        showConfirmButton: true,
-      })
+      console.log(error)
+      if (error.response.status === 403) {
+        Swal.fire({
+          icon: "error",
+          title: 'Gagal memperbarui data!',
+          text: `kata sandi tidak cocok`,
+          showConfirmButton: true,
+        })
+      }
+      if (error.response.status === 401) {
+        Swal.fire({
+          icon: "error",
+          title: 'Data default tidak boleh diubah!',
+          showConfirmButton: true,
+        })
+      }
     }
   }
 
