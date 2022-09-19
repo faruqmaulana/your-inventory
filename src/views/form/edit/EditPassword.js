@@ -92,7 +92,6 @@ export default function EditPassword({ props }) {
         router.replace(router.asPath);
       }, 1800);
     } catch (error) {
-      console.log(error)
       if (error.response.status === 403) {
         Swal.fire({
           icon: "error",
