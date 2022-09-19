@@ -224,9 +224,9 @@ const RegisterPage = () => {
             <Typography variant='body2'>Make your app management easy and fun!</Typography>
           </Box>
           <form autoComplete='off' onSubmit={handleSubmit}>
-            <TextField autoFocus fullWidth name='name' onChange={handleChanges} value={state.name} label='Name' sx={{ marginBottom: 4 }} />
-            <TextField autoFocus fullWidth name='username' onChange={handleChanges} value={state.username} label='Username' sx={{ marginBottom: 4 }} />
-            <TextField fullWidth type='email' name='email' onChange={handleChanges} value={state.email} label='Email' sx={{ marginBottom: 4 }} />
+            <TextField required autoFocus fullWidth name='name' onChange={handleChanges} value={state.name} label='Name' sx={{ marginBottom: 4 }} />
+            <TextField required fullWidth name='username' onChange={handleChanges} value={state.username} label='Username' sx={{ marginBottom: 4 }} />
+            <TextField required fullWidth type='email' name='email' onChange={handleChanges} value={state.email} label='Email' sx={{ marginBottom: 4 }} />
             <FormControl fullWidth>
               <InputLabel htmlFor='password'>Password</InputLabel>
               <OutlinedInput

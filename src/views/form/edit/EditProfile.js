@@ -10,9 +10,6 @@ import Button from '@mui/material/Button'
 
 export default function EditProfile({ props }) {
   const router = useRouter();
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
 
   const [state, setState] = useState({
     id: props.id,
@@ -24,10 +21,8 @@ export default function EditProfile({ props }) {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    setOpen(false);
     try {
       const result = await axios.put(`/api/update/profile`, state);
-      console.log(result)
       Swal.fire({
         icon: "success",
         title: result.data.message,
@@ -43,11 +38,7 @@ export default function EditProfile({ props }) {
         title: 'Gagal memperbarui data!',
         text: `Gagal memperbarui data!`,
         showConfirmButton: true,
-      }).then((confirm) => {
-        if (confirm.isConfirmed) {
-          setOpen(true);
-        }
-      });
+      })
     }
   }
 

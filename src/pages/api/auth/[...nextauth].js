@@ -16,8 +16,9 @@ export default NextAuth({
 
         const user = await prisma.user.findMany({ where: { email, password } })
         const userIsExist = user.length > 0;
+        delete user[0].password;
+
         if (!userIsExist) throw new Error("invalid credentials");
-        console.log(user[0])
         if (userIsExist) return user[0];
       }
     })
@@ -29,7 +30,6 @@ export default NextAuth({
   },
   callbacks: {
     async jwt({ token, user }) {
-
       return { ...token, ...user }
     },
     async session({ session, user, token }) {

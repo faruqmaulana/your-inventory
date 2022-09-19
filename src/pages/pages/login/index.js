@@ -27,6 +27,7 @@ import MuiFormControlLabel from '@mui/material/FormControlLabel'
 // ** Icons Imports
 import EyeOutline from 'mdi-material-ui/EyeOutline'
 import EyeOffOutline from 'mdi-material-ui/EyeOffOutline'
+import InformationOutline from 'mdi-material-ui/InformationOutline';
 
 // ** Configs
 import themeConfig from 'src/configs/themeConfig'
@@ -36,7 +37,7 @@ import BlankLayout from 'src/@core/layouts/BlankLayout'
 
 // ** Demo Imports
 import FooterIllustrationsV1 from 'src/views/pages/auth/FooterIllustration'
-import { Alert, CircularProgress, Fade } from '@mui/material'
+import { Alert, CircularProgress, Fade, Modal } from '@mui/material'
 
 // ** Styled Components
 const Card = styled(MuiCard)(({ theme }) => ({
@@ -56,6 +57,18 @@ const FormControlLabel = styled(MuiFormControlLabel)(({ theme }) => ({
   }
 }))
 
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  border: 'transparent',
+  boxShadow: 24,
+  borderRadius: 2,
+  p: 4,
+};
 
 export async function getServerSideProps(context) {
   const session = await getSession(context)
@@ -92,6 +105,10 @@ const LoginPage = () => {
   const theme = useTheme()
   const router = useRouter()
 
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
   const handleChange = prop => event => {
     setValues({ ...values, [prop]: event.target.value })
   }
@@ -125,6 +142,29 @@ const LoginPage = () => {
 
   return (
     <Box className='content-center' sx={{ display: 'flex', flexDirection: 'column' }}>
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            Admin
+          </Typography>
+          <Typography id="modal-modal-description">
+            email: admin@gmail.com<br />
+            password: admin
+          </Typography>
+          <Typography id="modal-modal-title" variant="h6" component="h2" sx={{ mt: 5 }}>
+            User
+          </Typography>
+          <Typography id="modal-modal-description">
+            email: user@gmail.com<br />
+            password: user
+          </Typography>
+        </Box>
+      </Modal>
       {state.alert && (
         <Card sx={{ zIndex: 1, mb: 5, backgroundColor: 'transparent', boxShadow: 'none' }}>
           <Fade in={state.alert} >
@@ -134,7 +174,8 @@ const LoginPage = () => {
           </Fade>
         </Card>
       )}
-      <Card sx={{ zIndex: 1 }}>
+      <Card sx={{ zIndex: 1, position: 'relative' }}>
+        <InformationOutline sx={{ position: 'absolute', right: 0, margin: 3 }} onClick={handleOpen} />
         <CardContent sx={{ padding: theme => `${theme.spacing(12, 9, 7)} !important` }}>
           <Box sx={{ mb: 8, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <svg

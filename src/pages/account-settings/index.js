@@ -91,7 +91,7 @@ const AccountSettings = ({ data }) => {
           <TabAccount props={data} />
         </TabPanel>
         <TabPanel sx={{ p: 0 }} value='security'>
-          <TabSecurity />
+          <TabSecurity props={data} />
         </TabPanel>
       </TabContext>
     </Card>
