@@ -62,7 +62,6 @@ const style = {
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: 400,
   bgcolor: 'background.paper',
   border: 'transparent',
   boxShadow: 24,
@@ -98,7 +97,8 @@ const LoginPage = () => {
     loading: false,
     loginStatus: 'Login',
     isError: false,
-    alert: false
+    alert: false,
+    component: false
   })
 
   // ** Hook
@@ -127,16 +127,19 @@ const LoginPage = () => {
     const { email, password } = values;
     const res = await signIn('credentials', { email, password, redirect: false })
     if (res.ok === true) {
-      setState({ ...state, loginStatus: 'Success...', isError: false, alert: true })
+      setState({ ...state, loginStatus: 'Success...', isError: false, component: true, alert: true })
 
       return router.push('/')
     }
 
     if (res.ok === false) {
-      setState({ ...state, loading: false, isError: true, alert: true })
+      setState({ ...state, loading: false, isError: true, component: true, alert: true })
       setTimeout(() => {
-        setState({ ...state, isError: true, alert: false })
+        setState({ ...state, isError: true, alert: false, component: true })
       }, 5000)
+      setTimeout(() => {
+        setState({ ...state, component: false })
+      }, 5500)
     }
   }
 
@@ -148,7 +151,7 @@ const LoginPage = () => {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style}>
+        <Box sx={style} className="modal">
           <Typography id="modal-modal-title" variant="h6" component="h2">
             Admin
           </Typography>
@@ -165,7 +168,7 @@ const LoginPage = () => {
           </Typography>
         </Box>
       </Modal>
-      {state.alert && (
+      {state.component && (
         <Card sx={{ zIndex: 1, mb: 5, backgroundColor: 'transparent', boxShadow: 'none' }}>
           <Fade in={state.alert} >
             <Alert severity={state.isError ? 'error' : 'success'} sx={{ width: '100%' }}>
@@ -175,7 +178,7 @@ const LoginPage = () => {
         </Card>
       )}
       <Card sx={{ zIndex: 1, position: 'relative' }}>
-        <InformationOutline sx={{ position: 'absolute', right: 0, margin: 3 }} onClick={handleOpen} />
+        <InformationOutline sx={{ position: 'absolute', right: 0, margin: 3, ":hover": { cursor: 'pointer' } }} onClick={handleOpen} />
         <CardContent sx={{ padding: theme => `${theme.spacing(12, 9, 7)} !important` }}>
           <Box sx={{ mb: 8, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <svg

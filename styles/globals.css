@@ -45,3 +45,13 @@ code[class*='language-'] {
   border-color: #9155fd;
   color: #9155fd;
 }
+
+.modal {
+  width: 90%;
+}
+
+@media (min-width: 400px) {
+  .modal {
+    width: 400px;
+  }
+}
