@@ -13,16 +13,16 @@ export const authentication = async (context, cb) => {
   }
 
   // user with 'user' role can't access this page
-  // if (url === '/users/') {
-  //   if (session.role === 'USER') {
-  //     return {
-  //       redirect: {
-  //         destination: '/401',
-  //         permanent: false
-  //       }
-  //     }
-  //   }
-  // }
+  if (url === '/users/') {
+    if (session.role === 'USER') {
+      return {
+        redirect: {
+          destination: '/401',
+          permanent: false
+        }
+      }
+    }
+  }
 
   return cb({ session })
 }
