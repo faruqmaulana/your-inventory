@@ -17,7 +17,7 @@ model User {
   name     String?
   username String?
   password String?
-  email    String?
+  email    String? @unique
   phone    String?
   role     Role    @default(USER)
 

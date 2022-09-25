@@ -50,7 +50,6 @@ export default function AddCategory() {
 
     async function handleSubmit(e) {
         e.preventDefault();
-        console.log("open stats :", open)
         setOpen(false);
         try {
             const result = await axios.post("/api/add/unit", state);

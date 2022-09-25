@@ -64,7 +64,6 @@ export default function AddExitItems({ data, session }) {
     const handleChange = (e) => {
         const name = e.target.name;
         const value = e.target.value;
-        console.log({ [name]: value })
         setState({ ...state, [name]: value, });
     };
 
@@ -94,7 +93,6 @@ export default function AddExitItems({ data, session }) {
                 router.replace(router.asPath);
             }, 1800);
         } catch (error) {
-            console.log(error)
             Swal.fire({
                 icon: "error",
                 title: 'Gagal menambahkan data!',
@@ -114,8 +112,6 @@ export default function AddExitItems({ data, session }) {
         if (filteredData.length > 0) {
             setState({ ...state, stock: filteredData[0].stock })
             setUistate({ ...uiState, unit: filteredData[0].unit.name, lastStock: filteredData[0].stock, })
-
-            console.log(uiState.lastStock)
         }
     }, [state.goodsId])
 

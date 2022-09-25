@@ -98,7 +98,8 @@ const LoginPage = () => {
     loginStatus: 'Login',
     isError: false,
     alert: false,
-    component: false
+    component: false,
+    errorMessage: 'Login Successfully!'
   })
 
   // ** Hook
@@ -126,16 +127,18 @@ const LoginPage = () => {
     setState({ ...state, loading: true })
     const { email, password } = values;
     const res = await signIn('credentials', { email, password, redirect: false })
+
     if (res.ok === true) {
-      setState({ ...state, loginStatus: 'Success...', isError: false, component: true, alert: true })
+      setState({ ...state, loginStatus: 'Success...', isError: false, component: true, alert: true, errorMessage: 'Login Successfully!' })
 
       return router.push('/')
     }
 
+    const dbError = res.error.includes('prisma.user.findMany()')
     if (res.ok === false) {
-      setState({ ...state, loading: false, isError: true, component: true, alert: true })
+      setState({ ...state, loading: false, isError: true, component: true, alert: true, errorMessage: dbError ? `Something wen't wrong!` : 'Wrong email and password!' })
       setTimeout(() => {
-        setState({ ...state, isError: true, alert: false, component: true })
+        setState({ ...state, isError: true, alert: false, component: true, errorMessage: dbError ? `Something wen't wrong!` : 'Wrong email and password!' })
       }, 5000)
       setTimeout(() => {
         setState({ ...state, component: false })
@@ -172,7 +175,7 @@ const LoginPage = () => {
         <Card sx={{ zIndex: 1, mb: 5, backgroundColor: 'transparent', boxShadow: 'none' }}>
           <Fade in={state.alert} >
             <Alert severity={state.isError ? 'error' : 'success'} sx={{ width: '100%' }}>
-              {!state.isError ? 'Login Successfully!' : 'Wrong email and password!'}
+              {state.errorMessage}
             </Alert>
           </Fade>
         </Card>

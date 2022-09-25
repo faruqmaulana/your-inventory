@@ -36,7 +36,6 @@ const style = {
 };
 
 export default function AddIncomingItem({ data, session }) {
-    console.log(session)
     const router = useRouter();
     const [date, setDate] = useState(new Date())
     const [open, setOpen] = useState(false);
@@ -90,13 +89,11 @@ export default function AddIncomingItem({ data, session }) {
                 goodsId: '',
                 supplierId: '',
             });
-            console.log(result)
             alert('Berhasil menambahkan data', `Transaksi berhasil`, "Barang Masuk", false, 1800)
             setTimeout(() => {
                 router.replace(router.asPath);
             }, 1800);
         } catch (error) {
-            console.log(error)
             Swal.fire({
                 icon: "error",
                 title: 'Gagal menambahkan data!',
@@ -117,7 +114,6 @@ export default function AddIncomingItem({ data, session }) {
             setState({ ...state, stock: filteredData[0].stock })
             setUistate({ ...uiState, unit: filteredData[0].unit.name, lastStock: filteredData[0].stock, })
 
-            console.log('render')
         }
     }, [state.goodsId])
 

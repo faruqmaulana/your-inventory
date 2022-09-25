@@ -72,7 +72,8 @@ const RegisterPage = () => {
     loading: false,
     loginStatus: 'Login',
     isError: false,
-    alert: false
+    alert: false,
+    errorMessage: ''
   })
 
   const [values, setValues] = useState({
@@ -102,6 +103,20 @@ const RegisterPage = () => {
     setState({ ...state, [name]: value });
   };
 
+  function handleError(error) {
+    setUi({
+      ...ui,
+      alert: true,
+      isError: true,
+      loading: false,
+      errorMessage: error === 400 ? 'e-mail already registered!' : `something wen't wrong!`
+    })
+
+    setTimeout(() => {
+      setUi({ ...ui, isError: true, alert: false })
+    }, 5000)
+  }
+
   async function handleSubmit(e) {
     e.preventDefault()
     setUi({ ...ui, loading: true })
@@ -123,10 +138,7 @@ const RegisterPage = () => {
         router.replace("/pages/login");
       }, 1800);
     } catch (error) {
-      setUi({ ...ui, loading: false, isError: true, alert: true })
-      setTimeout(() => {
-        setUi({ ...ui, isError: true, alert: false })
-      }, 5000)
+      return handleError(error.response.status);
     }
   }
 
@@ -137,7 +149,7 @@ const RegisterPage = () => {
         <Card sx={{ zIndex: 1, mb: 5, backgroundColor: 'transparent', boxShadow: 'none' }}>
           <Fade in={ui.alert} >
             <Alert severity={ui.isError ? 'error' : 'success'} sx={{ width: '100%' }}>
-              {!ui.isError ? 'Success!' : 'Something went wrong!'}
+              {!ui.isError ? 'Success!' : ui.errorMessage}
             </Alert>
           </Fade>
         </Card>

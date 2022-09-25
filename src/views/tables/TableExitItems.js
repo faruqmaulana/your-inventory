@@ -69,7 +69,6 @@ const TableExitItems = ({ data }) => {
             }, 1800);
 
           } catch (error) {
-            console.log(error)
             Swal.fire({
               icon: "error",
               title: 'Gagal menghapus data!',

@@ -59,7 +59,6 @@ export default function AddCategory({ data }) {
                 router.replace(router.asPath);
             }, 1800);
         } catch (error) {
-            console.log(error)
             Swal.fire({
                 icon: "error",
                 title: 'Gagal menambahkan data!',

@@ -11,7 +11,6 @@ import TableEntries from 'src/views/tables/TableEntries'
 import TableAmountOut from 'src/views/tables/TableAmountOut'
 import { Box, Button, Card } from '@mui/material'
 import prisma from 'src/lib/prisma'
-import { getSession, signIn } from 'next-auth/react'
 import { authentication } from 'src/utils/authentication'
 
 export function getServerSideProps(context) {

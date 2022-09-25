@@ -16,6 +16,26 @@ async function seeder() {
       },
     });
   }
+  await prisma.user.createMany({
+    data: [
+      {
+        name: 'Admin',
+        username: 'admin',
+        email: 'admin@gmail.com',
+        password: 'admin',
+        phone: '098765271',
+        role: "ADMIN"
+      },
+      {
+        name: 'User',
+        username: 'user',
+        email: 'user@gmail.com',
+        password: 'user',
+        phone: '098765271',
+        role: "USER"
+      },
+    ]
+  })
 
   console.log("Added item data");
 }
