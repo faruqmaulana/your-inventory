@@ -50,7 +50,7 @@ export default function AddExitItems({ data, session }) {
   const [state, setState] = useState({
     amount_out: 0,
     stock: '',
-    userId: session ? session.id : 1,
+    userId: session ? parseInt(session.sub) : 1,
     goodsId: ''
   })
 
@@ -82,7 +82,7 @@ export default function AddExitItems({ data, session }) {
       setState({
         amount_out: '',
         stock: 0,
-        userId: session ? session.id : 1,
+        userId: session ? parseInt(session.sub) : 1,
         goodsId: ''
       })
       alert('Berhasil menambahkan data', `Transaksi berhasil`, null, false, 1800)
@@ -202,11 +202,10 @@ export default function AddExitItems({ data, session }) {
               <TextField
                 disabled={true}
                 required
-                value={`${
-                  isNaN(uiState.lastStock - parseInt(state.amount_out))
+                value={`${isNaN(uiState.lastStock - parseInt(state.amount_out))
                     ? 0
                     : uiState.lastStock - parseInt(state.amount_out)
-                }`}
+                  }`}
                 onChange={handleChange}
                 name='stock'
                 style={{ marginBottom: 20 }}

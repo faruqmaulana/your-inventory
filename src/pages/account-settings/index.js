@@ -25,7 +25,7 @@ import { authentication } from 'src/utils/authentication'
 
 export function getServerSideProps(context) {
   return authentication(context, async ({ session }) => {
-    const data = await prisma.user.findUnique({ where: { id: session ? session.id : 1 } })
+    const data = await prisma.user.findUnique({ where: { id: session ? parseInt(session.sub) : 1 } })
     delete data.password
 
     return {

@@ -7,15 +7,21 @@ async function seeder() {
   await prisma.supplier.deleteMany();
   console.log("Deleted records in supplier table");
 
-  for (let i = 1; i <= 10; i++) {
-    await prisma.supplier.create({
-      data: {
-        name: `Supplier ${i}`,
+  await prisma.supplier.createMany({
+    data: [
+      {
+        name: `Toko Jaya Abadi`,
         phone: "865715239",
-        address: `Jl. Airlangga No. ${i}`,
+        address: `Jl. Airlangga No. 21`,
       },
-    });
-  }
+      {
+        name: `UD Namira Mart`,
+        phone: "800086159",
+        address: `Jl. Kertajaya No. 18`,
+      }
+    ],
+  });
+
   await prisma.user.createMany({
     data: [
       {

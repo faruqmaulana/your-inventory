@@ -49,7 +49,7 @@ export default function AddIncomingItem({ data, session }) {
   const [state, setState] = useState({
     entries: 0,
     stock: '',
-    userId: session ? session.id : 1,
+    userId: session ? parseInt(session.sub) : 1,
     goodsId: '',
     supplierId: ''
   })
@@ -82,7 +82,7 @@ export default function AddIncomingItem({ data, session }) {
       setState({
         entries: '',
         stock: 0,
-        userId: session ? session.id : 1,
+        userId: session ? parseInt(session.sub) : 1,
         goodsId: '',
         supplierId: ''
       })
@@ -220,9 +220,8 @@ export default function AddIncomingItem({ data, session }) {
               <TextField
                 disabled={true}
                 required
-                value={`${
-                  isNaN(uiState.lastStock + parseInt(state.entries)) ? 0 : uiState.lastStock + parseInt(state.entries)
-                }`}
+                value={`${isNaN(uiState.lastStock + parseInt(state.entries)) ? 0 : uiState.lastStock + parseInt(state.entries)
+                  }`}
                 onChange={handleChange}
                 name='stock'
                 style={{ marginBottom: 20 }}
