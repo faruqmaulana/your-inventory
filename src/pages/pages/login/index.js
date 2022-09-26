@@ -127,7 +127,6 @@ const LoginPage = () => {
     setState({ ...state, loading: true })
     const { email, password } = values
     const res = await signIn('credentials', { email, password, redirect: false })
-    console.log(res)
     if (res.ok === true) {
       setState({
         ...state,
