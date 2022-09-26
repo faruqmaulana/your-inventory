@@ -220,8 +220,9 @@ export default function AddIncomingItem({ data, session }) {
               <TextField
                 disabled={true}
                 required
-                value={`${isNaN(uiState.lastStock + parseInt(state.entries)) ? 0 : uiState.lastStock + parseInt(state.entries)
-                  }`}
+                value={`${
+                  isNaN(uiState.lastStock + parseInt(state.entries)) ? 0 : uiState.lastStock + parseInt(state.entries)
+                }`}
                 onChange={handleChange}
                 name='stock'
                 style={{ marginBottom: 20 }}

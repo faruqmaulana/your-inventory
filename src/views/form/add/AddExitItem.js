@@ -202,10 +202,11 @@ export default function AddExitItems({ data, session }) {
               <TextField
                 disabled={true}
                 required
-                value={`${isNaN(uiState.lastStock - parseInt(state.amount_out))
-                  ? 0
-                  : uiState.lastStock - parseInt(state.amount_out)
-                  }`}
+                value={`${
+                  isNaN(uiState.lastStock - parseInt(state.amount_out))
+                    ? 0
+                    : uiState.lastStock - parseInt(state.amount_out)
+                }`}
                 onChange={handleChange}
                 name='stock'
                 style={{ marginBottom: 20 }}
