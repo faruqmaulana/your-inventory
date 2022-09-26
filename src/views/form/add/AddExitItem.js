@@ -14,7 +14,7 @@ import DatePickerWrapper from 'src/@core/styles/libs/react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 
 import { alert } from 'src/utils/alert'
-import { Account, Close } from 'mdi-material-ui'
+import { Close } from 'mdi-material-ui'
 import { AppContext } from 'src/context/app-context'
 import { FormControl, InputAdornment, InputLabel, MenuItem, TextField, Select } from '@mui/material'
 import { handleDate } from 'src/utils/handleDate'
@@ -78,7 +78,7 @@ export default function AddExitItems({ data, session }) {
     }
     setOpen(false)
     try {
-      const result = await axios.post('/api/add/exitItem', data)
+      await axios.post('/api/add/exitItem', data)
       setState({
         amount_out: '',
         stock: 0,
@@ -203,8 +203,8 @@ export default function AddExitItems({ data, session }) {
                 disabled={true}
                 required
                 value={`${isNaN(uiState.lastStock - parseInt(state.amount_out))
-                    ? 0
-                    : uiState.lastStock - parseInt(state.amount_out)
+                  ? 0
+                  : uiState.lastStock - parseInt(state.amount_out)
                   }`}
                 onChange={handleChange}
                 name='stock'

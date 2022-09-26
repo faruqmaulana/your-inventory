@@ -78,7 +78,7 @@ export default function AddIncomingItem({ data, session }) {
     }
     setOpen(false)
     try {
-      const result = await axios.post('/api/add/incomingItem', data)
+      await axios.post('/api/add/incomingItem', data)
       setState({
         entries: '',
         stock: 0,
