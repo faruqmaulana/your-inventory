@@ -7,7 +7,6 @@ import AddUnit from 'src/views/form/add/AddUnit'
 import prisma from 'src/lib/prisma'
 import { authentication } from 'src/utils/authentication'
 
-
 export async function getServerSideProps(context) {
   return authentication(context, async () => {
     const data = await prisma.unit.findMany()
@@ -15,8 +14,8 @@ export async function getServerSideProps(context) {
     return {
       props: {
         data
-      },
-    };
+      }
+    }
   })
 }
 

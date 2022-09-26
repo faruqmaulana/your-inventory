@@ -7,7 +7,6 @@ import AddCategory from 'src/views/form/add/AddCategory'
 import prisma from 'src/lib/prisma'
 import { authentication } from 'src/utils/authentication'
 
-
 export function getServerSideProps(context) {
   return authentication(context, async () => {
     const data = await prisma.category.findMany()
@@ -15,8 +14,8 @@ export function getServerSideProps(context) {
     return {
       props: {
         data
-      },
-    };
+      }
+    }
   })
 }
 

@@ -23,11 +23,10 @@ import 'react-datepicker/dist/react-datepicker.css'
 import prisma from 'src/lib/prisma'
 import { authentication } from 'src/utils/authentication'
 
-
 export function getServerSideProps(context) {
   return authentication(context, async ({ session }) => {
     const data = await prisma.user.findUnique({ where: { id: session ? session.id : 1 } })
-    delete data.password;
+    delete data.password
 
     return {
       props: { data }

@@ -8,7 +8,6 @@ import prisma from 'src/lib/prisma'
 
 import { authentication } from 'src/utils/authentication'
 
-
 export function getServerSideProps(context) {
   return authentication(context, async () => {
     const data = await prisma.supplier.findMany()
@@ -16,10 +15,9 @@ export function getServerSideProps(context) {
     return {
       props: {
         data
-      },
-    };
+      }
+    }
   })
-
 }
 
 const TypographyPage = ({ data }) => {

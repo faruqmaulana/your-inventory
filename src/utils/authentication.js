@@ -1,7 +1,7 @@
-import { getSession } from "next-auth/react"
+import { getSession } from 'next-auth/react'
 
 export const authentication = async (context, cb) => {
-  const session = await getSession(context);
+  const session = await getSession(context)
   const { url } = context.req
   if (!session) {
     return {

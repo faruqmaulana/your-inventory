@@ -5,12 +5,10 @@ import { Grid, Card, CardHeader, Box } from '@mui/material'
 import TableIncomingItems from 'src/views/tables/TableIncomingItems'
 import AddIncomingItem from 'src/views/form/add/AddIncomingItem'
 import prisma from 'src/lib/prisma'
-import { getSession } from 'next-auth/react';
-
+import { getSession } from 'next-auth/react'
 
 export async function getServerSideProps(context) {
-
-  const session = await getSession(context);
+  const session = await getSession(context)
   if (!session) {
     return {
       redirect: {
@@ -21,20 +19,19 @@ export async function getServerSideProps(context) {
   }
 
   const data = await prisma.incomingItem.findMany({ include: { goods: true, user: true, supplier: true } })
-  const supplier = await prisma.supplier.findMany();
-  const goods = await prisma.goods.findMany({ include: { unit: true } });
+  const supplier = await prisma.supplier.findMany()
+  const goods = await prisma.goods.findMany({ include: { unit: true } })
 
   return {
     props: {
       data,
       addIncomingItems: { goods, supplier },
       session
-    },
-  };
+    }
+  }
 }
 
 const TypographyPage = ({ data, addIncomingItems, session }) => {
-
   return (
     <Grid container spacing={6}>
       <Grid item xs={12}>

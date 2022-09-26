@@ -22,11 +22,10 @@ const columns = [
   { id: 'stock', minWidth: 170, label: 'Nama Barang', align: 'center' },
   { id: 'satuan', minWidth: 170, label: 'Jumlah Keluar', align: 'center' },
   { id: 'user', minWidth: 170, label: 'User', align: 'center' },
-  { id: 'aksi', label: 'Aksi', align: 'center' },
+  { id: 'aksi', label: 'Aksi', align: 'center' }
 ]
 
 const TableExitItems = ({ data }) => {
-
   // ** States
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(10)
@@ -44,7 +43,7 @@ const TableExitItems = ({ data }) => {
   function deleteHandler(id) {
     Swal.fire({
       title: 'Apakah anda yakin?',
-      text: "Data akan dihapus secara permanen!",
+      text: 'Data akan dihapus secara permanen!',
       icon: 'warning',
       iconColor: '#9155fd',
       showCancelButton: true,
@@ -52,28 +51,27 @@ const TableExitItems = ({ data }) => {
       cancelButtonColor: '#9155fd',
       confirmButtonText: 'Iya, hapus!',
       cancelButtonText: 'Batal'
-    }).then((result) => {
+    }).then(result => {
       if (result.isConfirmed) {
-        (async () => {
+        ;(async () => {
           try {
-            const result = await axios.delete(`/api/delete/${router.asPath + id}`, id);
+            const result = await axios.delete(`/api/delete/${router.asPath + id}`, id)
             Swal.fire({
-              icon: "success",
+              icon: 'success',
               title: result.data.message,
               showConfirmButton: false,
-              timer: 1800,
-            });
+              timer: 1800
+            })
 
             setTimeout(() => {
-              router.replace(router.asPath);
-            }, 1800);
-
+              router.replace(router.asPath)
+            }, 1800)
           } catch (error) {
             Swal.fire({
-              icon: "error",
+              icon: 'error',
               title: 'Gagal menghapus data!',
-              text: 'Data yang anda hapus memiliki relasi dengan data lain, hapus data terkait untuk melanjutkan!',
-            });
+              text: 'Data yang anda hapus memiliki relasi dengan data lain, hapus data terkait untuk melanjutkan!'
+            })
           }
         })()
       }
@@ -94,42 +92,31 @@ const TableExitItems = ({ data }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {
-              (
-                rowsPerPage > 0
-                  ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  : data
-              ).map((item, i) => {
+            {(rowsPerPage > 0 ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) : data).map(
+              (item, i) => {
                 return (
                   <TableRow hover role='checkbox' tabIndex={-1} key={item.id}>
-                    <TableCell>
-                      {i + 1}
-                    </TableCell>
-                    <TableCell>
-                      {item.id}
-                    </TableCell>
-                    <TableCell align='center'>
-                      {item.date}
-                    </TableCell>
-                    <TableCell align='center'>
-                      {item.goods.name}
-                    </TableCell>
-                    <TableCell align='center'>
-                      {item.amount_out}
-                    </TableCell>
+                    <TableCell>{i + 1}</TableCell>
+                    <TableCell>{item.id}</TableCell>
+                    <TableCell align='center'>{item.date}</TableCell>
+                    <TableCell align='center'>{item.goods.name}</TableCell>
+                    <TableCell align='center'>{item.amount_out}</TableCell>
                     <TableCell align='center'>
                       {item.user.role}
-                      <span style={{ display: 'block' }}>
-                        {item.user.name}
-                      </span>
+                      <span style={{ display: 'block' }}>{item.user.name}</span>
                     </TableCell>
                     <TableCell align='center'>
-                      <Delete onClick={() => { deleteHandler(item.id) }} sx={{ ":hover": { cursor: 'pointer', color: 'red' } }} />
+                      <Delete
+                        onClick={() => {
+                          deleteHandler(item.id)
+                        }}
+                        sx={{ ':hover': { cursor: 'pointer', color: 'red' } }}
+                      />
                     </TableCell>
                   </TableRow>
                 )
-              })
-            }
+              }
+            )}
           </TableBody>
         </Table>
       </TableContainer>

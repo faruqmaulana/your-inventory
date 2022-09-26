@@ -99,12 +99,16 @@ const UserDropdown = () => {
               badgeContent={<BadgeContentSpan />}
               anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
             >
-              <Avatar alt={data ? data.name : "Loading..."} src='/images/avatars/1.png' sx={{ width: '2.5rem', height: '2.5rem' }} />
+              <Avatar
+                alt={data ? data.name : 'Loading...'}
+                src='/images/avatars/1.png'
+                sx={{ width: '2.5rem', height: '2.5rem' }}
+              />
             </Badge>
             <Box sx={{ display: 'flex', marginLeft: 3, alignItems: 'flex-start', flexDirection: 'column' }}>
-              <Typography sx={{ fontWeight: 600 }}>{data ? data.name : "Loading..."}</Typography>
+              <Typography sx={{ fontWeight: 600 }}>{data ? data.name : 'Loading...'}</Typography>
               <Typography variant='body2' sx={{ fontSize: '0.8rem', color: 'text.disabled' }}>
-                {data ? data.role : "Loading..."}
+                {data ? data.role : 'Loading...'}
               </Typography>
             </Box>
           </Box>
@@ -116,10 +120,12 @@ const UserDropdown = () => {
             Account Settings
           </Box>
         </MenuItem>
-        <MenuItem sx={{ py: 2 }}
+        <MenuItem
+          sx={{ py: 2 }}
           onClick={() => {
             signOut()
-          }}>
+          }}
+        >
           <LogoutVariant sx={{ marginRight: 2, fontSize: '1.375rem', color: 'text.secondary' }} />
           Logout
         </MenuItem>

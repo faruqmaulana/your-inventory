@@ -4,7 +4,7 @@
 
 // console.log(getTheme)
 
-// const theme = 
+// const theme =
 const themeConfig = {
   // ** Layout Configs
   templateName: 'Inventory App' /* App Name */,

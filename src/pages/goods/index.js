@@ -6,20 +6,20 @@ import TableGoods from 'src/views/tables/TableGoods'
 import AddGoods from 'src/views/form/add/AddGoods'
 import prisma from 'src/lib/prisma'
 
-import { authentication } from 'src/utils/authentication';
+import { authentication } from 'src/utils/authentication'
 
 export function getServerSideProps(context) {
   return authentication(context, async () => {
     const data = await prisma.goods.findMany({ include: { category: true, unit: true } })
-    const category = await prisma.category.findMany();
-    const unit = await prisma.unit.findMany();
+    const category = await prisma.category.findMany()
+    const unit = await prisma.unit.findMany()
 
     return {
       props: {
         data,
-        addGoods: { unit, category },
-      },
-    };
+        addGoods: { unit, category }
+      }
+    }
   })
 }
 

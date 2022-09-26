@@ -1,5 +1,5 @@
-import { withAuth } from "next-auth/middleware";
-import { NextResponse } from "next/server";
+import { withAuth } from 'next-auth/middleware'
+import { NextResponse } from 'next/server'
 
 // export default withAuth(
 //   function middleware(req) {
@@ -12,7 +12,6 @@ import { NextResponse } from "next/server";
 // export default function middleware() {
 //   console.log('hello from middleware')
 // }
-
 
 // import { withAuth } from "next-auth/middleware"
 
@@ -31,10 +30,9 @@ import { NextResponse } from "next/server";
 
 // export const config = { matcher: ["/"] }
 
-
 export default withAuth(
   function middleware(req) {
-    const { token } = req.nextauth;
+    const { token } = req.nextauth
 
     // if (req.nextUrl.pathname.startsWith('/api')) {
     //   console.log("testing routes: ", new URL('/api', req.url))
@@ -42,7 +40,7 @@ export default withAuth(
     //   // if(!token) return NextResponse.redirect(new URL('/about-2', request.url))
     // }
     console.log('benar ini adalah: ', req.nextUrl.pathname.startsWith('/users'))
-    console.log("from middleware: ", req.nextUrl)
+    console.log('from middleware: ', req.nextUrl)
     if (req.nextUrl.pathname.startsWith('/users')) {
       if (token.role === 'USER') return NextResponse.redirect(new URL('/401', req.url))
 
@@ -54,9 +52,8 @@ export default withAuth(
   {
     callbacks: {
       authorized({ req, token }) {
-
         // `/admin` requires admin role
-        if (req.nextUrl.pathname === "/users/") {
+        if (req.nextUrl.pathname === '/users/') {
           if (token?.role === 'USER') return NextResponse.redirect(new URL('/401', req.url))
 
           //set token from middleware
@@ -68,8 +65,8 @@ export default withAuth(
 
         // `/me` only requires the user to be logged in
         return !!token
-      },
-    },
+      }
+    }
   }
 )
 

@@ -72,7 +72,7 @@ const VerticalNavLink = ({ item, navVisible, toggleNavVisibility }) => {
           component={'a'}
           className={isNavLinkActive() ? 'active' : ''}
           onClick={e => {
-            if (item.title === "Login") return signIn()
+            if (item.title === 'Login') return signIn()
             if (item.path === undefined) {
               e.preventDefault()
               e.stopPropagation()

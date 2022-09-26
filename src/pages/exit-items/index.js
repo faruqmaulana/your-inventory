@@ -7,19 +7,18 @@ import AddExitItem from 'src/views/form/add/AddExitItem'
 import prisma from 'src/lib/prisma'
 import { authentication } from 'src/utils/authentication'
 
-
 export function getServerSideProps(context) {
   return authentication(context, async ({ session }) => {
     const data = await prisma.exitItem.findMany({ include: { goods: true, user: true } })
-    const goods = await prisma.goods.findMany({ include: { unit: true } });
+    const goods = await prisma.goods.findMany({ include: { unit: true } })
 
     return {
       props: {
         data,
         goods,
         session
-      },
-    };
+      }
+    }
   })
 }
 

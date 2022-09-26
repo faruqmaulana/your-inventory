@@ -49,7 +49,6 @@ if (themeConfig.routingLoader) {
 const MyApp = props => {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props
 
-
   // Variables
   const getLayout = Component.getLayout ?? (page => <UserLayout>{page}</UserLayout>)
 
@@ -65,10 +64,7 @@ const MyApp = props => {
         <meta name='viewport' content='initial-scale=1, width=device-width' />
       </Head>
 
-      <SessionProvider
-        session={pageProps.session}
-        refetchInterval={5 * 60}
-        refetchOnWindowFocus={true}>
+      <SessionProvider session={pageProps.session} refetchInterval={5 * 60} refetchOnWindowFocus={true}>
         <SettingsProvider>
           <SettingsConsumer>
             {({ settings }) => {
@@ -77,7 +73,7 @@ const MyApp = props => {
           </SettingsConsumer>
         </SettingsProvider>
       </SessionProvider>
-    </CacheProvider >
+    </CacheProvider>
   )
 }
 

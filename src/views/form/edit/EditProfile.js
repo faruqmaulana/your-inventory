@@ -1,7 +1,7 @@
-import axios from "axios";
-import Swal from "sweetalert2";
-import { useState } from 'react';
-import { useRouter } from "next/router";
+import axios from 'axios'
+import Swal from 'sweetalert2'
+import { useState } from 'react'
+import { useRouter } from 'next/router'
 
 // ** MUI Imports
 import Grid from '@mui/material/Grid'
@@ -9,44 +9,44 @@ import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
 
 export default function EditProfile({ props }) {
-  const router = useRouter();
+  const router = useRouter()
 
   const [state, setState] = useState({
     id: props.id,
     name: props.name,
     username: props.username,
     email: props.email,
-    phone: props.phone,
+    phone: props.phone
   })
 
   async function handleSubmit(e) {
-    e.preventDefault();
+    e.preventDefault()
     try {
-      const result = await axios.put(`/api/update/profile`, state);
+      const result = await axios.put(`/api/update/profile`, state)
       Swal.fire({
-        icon: "success",
+        icon: 'success',
         title: result.data.message,
         showConfirmButton: false,
         timer: 1800
-      });
+      })
       setTimeout(() => {
-        router.replace(router.asPath);
-      }, 1800);
+        router.replace(router.asPath)
+      }, 1800)
     } catch (error) {
       Swal.fire({
-        icon: "error",
+        icon: 'error',
         title: 'Gagal memperbarui data!',
         text: `Gagal memperbarui data!`,
-        showConfirmButton: true,
+        showConfirmButton: true
       })
     }
   }
 
-  const handleChange = (e) => {
-    const name = e.target.name;
-    const value = e.target.value;
-    setState({ ...state, [name]: value, });
-  };
+  const handleChange = e => {
+    const name = e.target.name
+    const value = e.target.value
+    setState({ ...state, [name]: value })
+  }
 
   const handleReset = () => {
     setState({
@@ -54,7 +54,7 @@ export default function EditProfile({ props }) {
       name: props.name,
       username: props.username,
       email: props.email,
-      phone: props.phone,
+      phone: props.phone
     })
   }
 
@@ -66,28 +66,21 @@ export default function EditProfile({ props }) {
             <TextField
               required
               fullWidth
-              name="username"
+              name='username'
               label='Username'
               value={state.username}
               onChange={handleChange}
             />
           </Grid>
           <Grid item xs={12} sm={6}>
-            <TextField
-              required
-              fullWidth
-              label='Name'
-              name="name"
-              value={state.name}
-              onChange={handleChange}
-            />
+            <TextField required fullWidth label='Name' name='name' value={state.name} onChange={handleChange} />
           </Grid>
           <Grid item xs={12} sm={6}>
             <TextField
               required
               disabled
               fullWidth
-              name="email"
+              name='email'
               type='email'
               label='Email'
               value={state.email}
@@ -98,11 +91,12 @@ export default function EditProfile({ props }) {
             <TextField
               required
               fullWidth
-              type="number"
-              name="phone"
+              type='number'
+              name='phone'
               label='Phone'
               value={state.phone}
-              onChange={handleChange} />
+              onChange={handleChange}
+            />
           </Grid>
           <Grid item xs={12}>
             <Button type='submit' variant='contained' sx={{ marginRight: 3.5 }}>
@@ -113,5 +107,7 @@ export default function EditProfile({ props }) {
             </Button>
           </Grid>
         </Grid>
-      </form></>)
+      </form>
+    </>
+  )
 }

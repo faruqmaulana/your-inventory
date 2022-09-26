@@ -1,16 +1,26 @@
-import axios from "axios";
-import Swal from "sweetalert2";
-import { useState } from 'react';
-import { useRouter } from "next/router";
+import axios from 'axios'
+import Swal from 'sweetalert2'
+import { useState } from 'react'
+import { useRouter } from 'next/router'
 
 // ** MUI Imports
 import Grid from '@mui/material/Grid'
 import Button from '@mui/material/Button'
-import { Alert, Box, CardContent, Fade, FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput } from "@mui/material";
-import { EyeOffOutline, EyeOutline } from "mdi-material-ui";
+import {
+  Alert,
+  Box,
+  CardContent,
+  Fade,
+  FormControl,
+  IconButton,
+  InputAdornment,
+  InputLabel,
+  OutlinedInput
+} from '@mui/material'
+import { EyeOffOutline, EyeOutline } from 'mdi-material-ui'
 
 export default function EditPassword({ props }) {
-  const router = useRouter();
+  const router = useRouter()
 
   // ** States
   const [values, setValues] = useState({
@@ -63,7 +73,7 @@ export default function EditPassword({ props }) {
   }
 
   async function handleSubmit(e) {
-    e.preventDefault();
+    e.preventDefault()
 
     const state = {
       id: props.id,
@@ -73,38 +83,38 @@ export default function EditPassword({ props }) {
 
     if (values.newPassword !== values.confirmNewPassword) return setValues({ ...values, alert: true })
     try {
-      const result = await axios.put(`/api/update/password`, state);
+      const result = await axios.put(`/api/update/password`, state)
       setValues({
         ...values,
         newPassword: '',
         currentPassword: '',
-        confirmNewPassword: '',
+        confirmNewPassword: ''
       })
 
       Swal.fire({
-        icon: "success",
+        icon: 'success',
         title: result.data.message,
         showConfirmButton: false,
         timer: 1800
-      });
+      })
 
       setTimeout(() => {
-        router.replace(router.asPath);
-      }, 1800);
+        router.replace(router.asPath)
+      }, 1800)
     } catch (error) {
       if (error.response.status === 403) {
         Swal.fire({
-          icon: "error",
+          icon: 'error',
           title: 'Gagal memperbarui data!',
           text: `kata sandi tidak cocok`,
-          showConfirmButton: true,
+          showConfirmButton: true
         })
       }
       if (error.response.status === 401) {
         Swal.fire({
-          icon: "error",
+          icon: 'error',
           title: 'Data default tidak boleh diubah!',
-          showConfirmButton: true,
+          showConfirmButton: true
         })
       }
     }
@@ -117,7 +127,13 @@ export default function EditPassword({ props }) {
           <Grid item xs={12} sm={6}>
             {values.alert && (
               <Fade in={values.alert}>
-                <Alert severity='error' sx={{ width: '100%' }} onClose={() => { setValues({ ...values, alert: false }) }}>
+                <Alert
+                  severity='error'
+                  sx={{ width: '100%' }}
+                  onClose={() => {
+                    setValues({ ...values, alert: false })
+                  }}
+                >
                   New password and confirm password doesn't match!
                 </Alert>
               </Fade>
@@ -213,7 +229,7 @@ export default function EditPassword({ props }) {
 
       <CardContent>
         <Box>
-          <Button variant='contained' type="submit" sx={{ marginRight: 3.5 }}>
+          <Button variant='contained' type='submit' sx={{ marginRight: 3.5 }}>
             Change Password
           </Button>
         </Box>

@@ -9,8 +9,6 @@ import TableCell from '@mui/material/TableCell'
 import Typography from '@mui/material/Typography'
 import TableContainer from '@mui/material/TableContainer'
 
-
-
 const DashboardTable = ({ data }) => {
   return (
     <Card>
@@ -19,8 +17,8 @@ const DashboardTable = ({ data }) => {
           <TableHead>
             <TableRow>
               <TableCell>Tanggal</TableCell>
-              <TableCell align="center">Barang</TableCell>
-              <TableCell align="center">Jumlah</TableCell>
+              <TableCell align='center'>Barang</TableCell>
+              <TableCell align='center'>Jumlah</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -29,14 +27,18 @@ const DashboardTable = ({ data }) => {
                 <TableCell>
                   <Typography sx={{ fontWeight: 500, fontSize: '0.875rem !important' }}>{incoming.date}</Typography>
                 </TableCell>
-                <TableCell align='center' sx={{ fontWeight: 500 }}>{incoming.goods.name}</TableCell>
+                <TableCell align='center' sx={{ fontWeight: 500 }}>
+                  {incoming.goods.name}
+                </TableCell>
                 <TableCell>
-                  <Box sx={{
-                    bgcolor: 'primary.main',
-                    color: 'white',
-                    borderRadius: '10px',
-                    textAlign: 'center'
-                  }}>
+                  <Box
+                    sx={{
+                      bgcolor: 'primary.main',
+                      color: 'white',
+                      borderRadius: '10px',
+                      textAlign: 'center'
+                    }}
+                  >
                     {incoming.entries}
                   </Box>
                 </TableCell>

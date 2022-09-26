@@ -21,7 +21,7 @@ const columns = [
   { id: 'name', minWidth: 200, label: 'Nama' },
   { id: 'phone', minWidth: 200, label: 'No. Telp', align: 'center' },
   { id: 'address', minWidth: 200, label: 'Alamat', align: 'center' },
-  { id: 'aksi', minWidth: 50, label: 'Aksi', align: 'center' },
+  { id: 'aksi', minWidth: 50, label: 'Aksi', align: 'center' }
 ]
 
 const TableSupplier = ({ data }) => {
@@ -42,35 +42,34 @@ const TableSupplier = ({ data }) => {
   function deleteHandler(id) {
     Swal.fire({
       title: 'Apakah anda yakin?',
-      text: "Data akan dihapus secara permanen!",
+      text: 'Data akan dihapus secara permanen!',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
       cancelButtonText: 'Batal',
       confirmButtonText: 'Iya, hapus!'
-    }).then((result) => {
+    }).then(result => {
       if (result.isConfirmed) {
-        (async () => {
+        ;(async () => {
           try {
-            const result = await axios.delete(`/api/delete/${router.asPath + id}`, id);
+            const result = await axios.delete(`/api/delete/${router.asPath + id}`, id)
             Swal.fire({
-              icon: "success",
+              icon: 'success',
               title: result.data.message,
               showConfirmButton: false,
-              timer: 1800,
-            });
+              timer: 1800
+            })
 
             setTimeout(() => {
-              router.replace(router.asPath);
-            }, 1800);
-
+              router.replace(router.asPath)
+            }, 1800)
           } catch (error) {
             Swal.fire({
-              icon: "error",
+              icon: 'error',
               title: 'Gagal menghapus data!',
-              text: 'Kategori yang anda hapus memiliki relasi dengan data lain, hapus data terkait untuk melanjutkan!',
-            });
+              text: 'Kategori yang anda hapus memiliki relasi dengan data lain, hapus data terkait untuk melanjutkan!'
+            })
           }
         })()
       }
@@ -91,37 +90,38 @@ const TableSupplier = ({ data }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {
-              (
-                rowsPerPage > 0
-                  ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  : data
-              ).map((supplier, i) => {
+            {(rowsPerPage > 0 ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) : data).map(
+              (supplier, i) => {
                 return (
                   <TableRow hover role='checkbox' tabIndex={-1} key={supplier.id}>
-                    <TableCell>
-                      {i + 1}
-                    </TableCell>
-                    <TableCell>
-                      {supplier.name}
-                    </TableCell>
+                    <TableCell>{i + 1}</TableCell>
+                    <TableCell>{supplier.name}</TableCell>
+                    <TableCell align='center'>{supplier.phone}</TableCell>
+                    <TableCell align='center'>{supplier.address}</TableCell>
                     <TableCell align='center'>
-                      {supplier.phone}
-                    </TableCell>
-                    <TableCell align='center'>
-                      {supplier.address}
-                    </TableCell>
-                    <TableCell align='center'>
-                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'row', minWidth: '5rem' }}>
+                      <div
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          flexDirection: 'row',
+                          minWidth: '5rem'
+                        }}
+                      >
                         <EditSupplier props={supplier} />
                         &nbsp; | &nbsp;
-                        <Delete onClick={() => { deleteHandler(supplier.id) }} sx={{ ":hover": { cursor: 'pointer', color: 'red' } }} />
+                        <Delete
+                          onClick={() => {
+                            deleteHandler(supplier.id)
+                          }}
+                          sx={{ ':hover': { cursor: 'pointer', color: 'red' } }}
+                        />
                       </div>
                     </TableCell>
                   </TableRow>
                 )
-              })
-            }
+              }
+            )}
           </TableBody>
         </Table>
       </TableContainer>

@@ -27,14 +27,18 @@ const DashboardTable = ({ data }) => {
                 <TableCell>
                   <Typography sx={{ fontWeight: 500, fontSize: '0.875rem !important' }}>{exit.date}</Typography>
                 </TableCell>
-                <TableCell align='center' sx={{ fontWeight: 500 }}>{exit.goods.name}</TableCell>
+                <TableCell align='center' sx={{ fontWeight: 500 }}>
+                  {exit.goods.name}
+                </TableCell>
                 <TableCell>
-                  <Box sx={{
-                    bgcolor: 'error.main',
-                    color: 'white',
-                    borderRadius: '10px',
-                    textAlign: 'center'
-                  }}>
+                  <Box
+                    sx={{
+                      bgcolor: 'error.main',
+                      color: 'white',
+                      borderRadius: '10px',
+                      textAlign: 'center'
+                    }}
+                  >
                     {exit.amount_out}
                   </Box>
                 </TableCell>

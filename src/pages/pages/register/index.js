@@ -37,7 +37,6 @@ import FooterIllustrationsV1 from 'src/views/pages/auth/FooterIllustration'
 import { useRouter } from 'next/router'
 import { Alert, CircularProgress, Fade } from '@mui/material'
 
-
 // ** Styled Components
 const Card = styled(MuiCard)(({ theme }) => ({
   [theme.breakpoints.up('sm')]: { width: '28rem' }
@@ -97,11 +96,11 @@ const RegisterPage = () => {
     event.preventDefault()
   }
 
-  const handleChanges = (e) => {
-    const name = e.target.name;
-    const value = e.target.value;
-    setState({ ...state, [name]: value });
-  };
+  const handleChanges = e => {
+    const name = e.target.name
+    const value = e.target.value
+    setState({ ...state, [name]: value })
+  }
 
   function handleError(error) {
     setUi({
@@ -122,7 +121,7 @@ const RegisterPage = () => {
     setUi({ ...ui, loading: true })
     try {
       const payload = { ...state, password: values.password }
-      await axios.post(`/api/add/users`, payload);
+      await axios.post(`/api/add/users`, payload)
       setUi({ ...ui, loginStatus: 'Success...', isError: false, alert: true })
 
       setState({
@@ -132,22 +131,21 @@ const RegisterPage = () => {
         email: '',
         phone: '',
         role: 'USER'
-      });
+      })
 
       setTimeout(() => {
-        router.replace("/pages/login");
-      }, 1800);
+        router.replace('/pages/login')
+      }, 1800)
     } catch (error) {
-      return handleError(error.response.status);
+      return handleError(error.response.status)
     }
   }
-
 
   return (
     <Box className='content-center' sx={{ display: 'flex', flexDirection: 'column' }}>
       {ui.alert && (
         <Card sx={{ zIndex: 1, mb: 5, backgroundColor: 'transparent', boxShadow: 'none' }}>
-          <Fade in={ui.alert} >
+          <Fade in={ui.alert}>
             <Alert severity={ui.isError ? 'error' : 'success'} sx={{ width: '100%' }}>
               {!ui.isError ? 'Success!' : ui.errorMessage}
             </Alert>
@@ -236,9 +234,35 @@ const RegisterPage = () => {
             <Typography variant='body2'>Make your app management easy and fun!</Typography>
           </Box>
           <form autoComplete='off' onSubmit={handleSubmit}>
-            <TextField required autoFocus fullWidth name='name' onChange={handleChanges} value={state.name} label='Name' sx={{ marginBottom: 4 }} />
-            <TextField required fullWidth name='username' onChange={handleChanges} value={state.username} label='Username' sx={{ marginBottom: 4 }} />
-            <TextField required fullWidth type='email' name='email' onChange={handleChanges} value={state.email} label='Email' sx={{ marginBottom: 4 }} />
+            <TextField
+              required
+              autoFocus
+              fullWidth
+              name='name'
+              onChange={handleChanges}
+              value={state.name}
+              label='Name'
+              sx={{ marginBottom: 4 }}
+            />
+            <TextField
+              required
+              fullWidth
+              name='username'
+              onChange={handleChanges}
+              value={state.username}
+              label='Username'
+              sx={{ marginBottom: 4 }}
+            />
+            <TextField
+              required
+              fullWidth
+              type='email'
+              name='email'
+              onChange={handleChanges}
+              value={state.email}
+              label='Email'
+              sx={{ marginBottom: 4 }}
+            />
             <FormControl fullWidth>
               <InputLabel htmlFor='password'>Password</InputLabel>
               <OutlinedInput
@@ -273,7 +297,14 @@ const RegisterPage = () => {
                 </Fragment>
               }
             />
-            <Button fullWidth size='large' type='submit' variant='contained' sx={{ marginBottom: 7 }} disabled={ui.loading}>
+            <Button
+              fullWidth
+              size='large'
+              type='submit'
+              variant='contained'
+              sx={{ marginBottom: 7 }}
+              disabled={ui.loading}
+            >
               {ui.loading ? <CircularProgress size={26} sx={{ color: '#312D4B' }} /> : ui.loginStatus}
             </Button>
             <Box sx={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center' }}>

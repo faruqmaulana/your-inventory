@@ -7,7 +7,6 @@ import AddUser from 'src/views/form/add/AddUser'
 import prisma from 'src/lib/prisma'
 import { authentication } from 'src/utils/authentication'
 
-
 export function getServerSideProps(context) {
   return authentication(context, async ({ session }) => {
     const data = await prisma.user.findMany()
@@ -16,8 +15,8 @@ export function getServerSideProps(context) {
       props: {
         data,
         session
-      },
-    };
+      }
+    }
   })
 }
 

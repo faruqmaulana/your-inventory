@@ -1,6 +1,6 @@
 import NextAuth from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
-import prisma from 'src/lib/prisma';
+import prisma from 'src/lib/prisma'
 
 // export default NextAuth({
 //   session: {
@@ -47,7 +47,6 @@ import prisma from 'src/lib/prisma';
 //   },
 // })
 
-
 export const authOptions = {
   session: {
     strategy: 'jwt'
@@ -57,14 +56,14 @@ export const authOptions = {
       type: 'credentials',
       credentials: {},
       async authorize(credentials, req) {
-        const { email, password } = credentials;
+        const { email, password } = credentials
 
         const user = await prisma.user.findMany({ where: { email, password } })
-        const userIsExist = user.length > 0;
-        delete user[0].password;
+        const userIsExist = user.length > 0
+        delete user[0].password
 
-        if (!userIsExist) throw new Error("invalid credentials");
-        if (userIsExist) return user[0];
+        if (!userIsExist) throw new Error('invalid credentials')
+        if (userIsExist) return user[0]
       }
     })
   ],
@@ -86,7 +85,7 @@ export const authOptions = {
 
     async session({ session, user, token }) {
       return token
-    },
+    }
 
     // async redirect({ url, baseUrl }) {
     //   console.log("redirect: ", baseUrl)
@@ -97,8 +96,8 @@ export const authOptions = {
   secret: process.env.NEXTAUTH_SECRET,
   pages: {
     signIn: '/pages/login',
-    error: '/500',
-  },
+    error: '/500'
+  }
 }
 
 export default NextAuth(authOptions)

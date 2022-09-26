@@ -12,7 +12,6 @@ import TableContainer from '@mui/material/TableContainer'
 import Link from 'next/link'
 
 const DashboardTable = ({ data }) => {
-
   return (
     <Card>
       <TableContainer>
@@ -32,12 +31,14 @@ const DashboardTable = ({ data }) => {
                 </TableCell>
                 <TableCell align='center'>{minStock.stock}</TableCell>
                 <TableCell align='right' style={{ display: 'flex', alignItems: 'center', justifyContent: 'end' }}>
-                  <Box sx={{
-                    bgcolor: 'warning.main',
-                    width: '30px',
-                    borderRadius: '10px',
-                    textAlign: 'center'
-                  }}>
+                  <Box
+                    sx={{
+                      bgcolor: 'warning.main',
+                      width: '30px',
+                      borderRadius: '10px',
+                      textAlign: 'center'
+                    }}
+                  >
                     <Link href='#'>
                       <a style={{ color: 'white' }}>
                         <span>+</span>

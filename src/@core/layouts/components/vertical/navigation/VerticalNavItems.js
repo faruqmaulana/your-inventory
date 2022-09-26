@@ -15,7 +15,7 @@ const VerticalNavItems = props => {
   const { status, data } = useSession()
 
   if (data) {
-    if (data.role !== "ADMIN") {
+    if (data.role !== 'ADMIN') {
       delete verticalNavItems[9]
       delete verticalNavItems[10]
     }

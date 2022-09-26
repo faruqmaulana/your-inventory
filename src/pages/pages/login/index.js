@@ -27,7 +27,7 @@ import MuiFormControlLabel from '@mui/material/FormControlLabel'
 // ** Icons Imports
 import EyeOutline from 'mdi-material-ui/EyeOutline'
 import EyeOffOutline from 'mdi-material-ui/EyeOffOutline'
-import InformationOutline from 'mdi-material-ui/InformationOutline';
+import InformationOutline from 'mdi-material-ui/InformationOutline'
 
 // ** Configs
 import themeConfig from 'src/configs/themeConfig'
@@ -66,8 +66,8 @@ const style = {
   border: 'transparent',
   boxShadow: 24,
   borderRadius: 2,
-  p: 4,
-};
+  p: 4
+}
 
 export async function getServerSideProps(context) {
   const session = await getSession(context)
@@ -106,9 +106,9 @@ const LoginPage = () => {
   const theme = useTheme()
   const router = useRouter()
 
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const [open, setOpen] = useState(false)
+  const handleOpen = () => setOpen(true)
+  const handleClose = () => setOpen(false)
 
   const handleChange = prop => event => {
     setValues({ ...values, [prop]: event.target.value })
@@ -122,23 +122,43 @@ const LoginPage = () => {
     event.preventDefault()
   }
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault()
     setState({ ...state, loading: true })
-    const { email, password } = values;
+    const { email, password } = values
     const res = await signIn('credentials', { email, password, redirect: false })
 
     if (res.ok === true) {
-      setState({ ...state, loginStatus: 'Success...', isError: false, component: true, alert: true, errorMessage: 'Login Successfully!' })
+      setState({
+        ...state,
+        loginStatus: 'Success...',
+        isError: false,
+        component: true,
+        alert: true,
+        errorMessage: 'Login Successfully!'
+      })
 
       return router.push('/')
     }
 
     const dbError = res.error.includes('prisma.user.findMany()')
     if (res.ok === false) {
-      setState({ ...state, loading: false, isError: true, component: true, alert: true, errorMessage: dbError ? `Something wen't wrong!` : 'Wrong email and password!' })
+      setState({
+        ...state,
+        loading: false,
+        isError: true,
+        component: true,
+        alert: true,
+        errorMessage: dbError ? `Something wen't wrong!` : 'Wrong email and password!'
+      })
       setTimeout(() => {
-        setState({ ...state, isError: true, alert: false, component: true, errorMessage: dbError ? `Something wen't wrong!` : 'Wrong email and password!' })
+        setState({
+          ...state,
+          isError: true,
+          alert: false,
+          component: true,
+          errorMessage: dbError ? `Something wen't wrong!` : 'Wrong email and password!'
+        })
       }, 5000)
       setTimeout(() => {
         setState({ ...state, component: false })
@@ -151,29 +171,31 @@ const LoginPage = () => {
       <Modal
         open={open}
         onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
+        aria-labelledby='modal-modal-title'
+        aria-describedby='modal-modal-description'
       >
-        <Box sx={style} className="modal">
-          <Typography id="modal-modal-title" variant="h6" component="h2">
+        <Box sx={style} className='modal'>
+          <Typography id='modal-modal-title' variant='h6' component='h2'>
             Admin
           </Typography>
-          <Typography id="modal-modal-description">
-            email: admin@gmail.com<br />
+          <Typography id='modal-modal-description'>
+            email: admin@gmail.com
+            <br />
             password: admin
           </Typography>
-          <Typography id="modal-modal-title" variant="h6" component="h2" sx={{ mt: 5 }}>
+          <Typography id='modal-modal-title' variant='h6' component='h2' sx={{ mt: 5 }}>
             User
           </Typography>
-          <Typography id="modal-modal-description">
-            email: user@gmail.com<br />
+          <Typography id='modal-modal-description'>
+            email: user@gmail.com
+            <br />
             password: user
           </Typography>
         </Box>
       </Modal>
       {state.component && (
         <Card sx={{ zIndex: 1, mb: 5, backgroundColor: 'transparent', boxShadow: 'none' }}>
-          <Fade in={state.alert} >
+          <Fade in={state.alert}>
             <Alert severity={state.isError ? 'error' : 'success'} sx={{ width: '100%' }}>
               {state.errorMessage}
             </Alert>
@@ -181,7 +203,10 @@ const LoginPage = () => {
         </Card>
       )}
       <Card sx={{ zIndex: 1, position: 'relative' }}>
-        <InformationOutline sx={{ position: 'absolute', right: 0, margin: 3, ":hover": { cursor: 'pointer' } }} onClick={handleOpen} />
+        <InformationOutline
+          sx={{ position: 'absolute', right: 0, margin: 3, ':hover': { cursor: 'pointer' } }}
+          onClick={handleOpen}
+        />
         <CardContent sx={{ padding: theme => `${theme.spacing(12, 9, 7)} !important` }}>
           <Box sx={{ mb: 8, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <svg
@@ -262,7 +287,7 @@ const LoginPage = () => {
             </Typography>
             <Typography variant='body2'>Please sign-in to your account and start the adventure</Typography>
           </Box>
-          <form method="post" onSubmit={handleSubmit}>
+          <form method='post' onSubmit={handleSubmit}>
             <TextField
               required
               autoFocus
@@ -330,7 +355,7 @@ const LoginPage = () => {
         </CardContent>
       </Card>
       <FooterIllustrationsV1 />
-    </Box >
+    </Box>
   )
 }
 LoginPage.getLayout = page => <BlankLayout>{page}</BlankLayout>

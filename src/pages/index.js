@@ -21,9 +21,11 @@ export function getServerSideProps(context) {
     const getSupplierCount = await prisma.supplier.count()
     const getUserCount = await prisma.user.count()
 
-    // get stock total 
-    const getStockTotal = getGoodsCount.map(data => { return data.stock })
-    const stockCount = getStockTotal.reduce((partialSum, a) => partialSum + a, 0);
+    // get stock total
+    const getStockTotal = getGoodsCount.map(data => {
+      return data.stock
+    })
+    const stockCount = getStockTotal.reduce((partialSum, a) => partialSum + a, 0)
 
     const minStock = await prisma.goods.findMany({ where: { stock: 0 }, orderBy: { id: 'desc' }, take: 5 })
 
@@ -53,13 +55,12 @@ export function getServerSideProps(context) {
         exitItems,
         totalCount,
         session
-      },
-    };
+      }
+    }
   })
 }
 
 const Dashboard = ({ minStock, incomingItems, exitItems, totalCount, session }) => {
-
   return (
     <ApexChartWrapper>
       <Grid container spacing={6}>
@@ -68,7 +69,9 @@ const Dashboard = ({ minStock, incomingItems, exitItems, totalCount, session }) 
         </Grid>
         <Grid item xs={12} md={4} lg={4}>
           <Card>
-            <Box sx={{ fontWeight: '600', padding: '20px', textAlign: 'center', bgcolor: "warning.main", color: '#FFF' }}>
+            <Box
+              sx={{ fontWeight: '600', padding: '20px', textAlign: 'center', bgcolor: 'warning.main', color: '#FFF' }}
+            >
               Stok Barang Minimum
             </Box>
             <TableMinimumStock data={minStock} />
@@ -76,7 +79,9 @@ const Dashboard = ({ minStock, incomingItems, exitItems, totalCount, session }) 
         </Grid>
         <Grid item xs={12} md={4} lg={4}>
           <Card>
-            <Box sx={{ fontWeight: '600', padding: '20px', textAlign: 'center', bgcolor: "primary.main", color: '#FFF' }}>
+            <Box
+              sx={{ fontWeight: '600', padding: '20px', textAlign: 'center', bgcolor: 'primary.main', color: '#FFF' }}
+            >
               5 Transaksi Barang Masuk
             </Box>
             <TableEntries data={incomingItems} />
@@ -84,7 +89,7 @@ const Dashboard = ({ minStock, incomingItems, exitItems, totalCount, session }) 
         </Grid>
         <Grid item xs={12} md={4} lg={4}>
           <Card>
-            <Box sx={{ fontWeight: '600', padding: '20px', textAlign: 'center', bgcolor: "error.main", color: '#FFF' }}>
+            <Box sx={{ fontWeight: '600', padding: '20px', textAlign: 'center', bgcolor: 'error.main', color: '#FFF' }}>
               5 Transaksi Barang Keluar
             </Box>
             <TableAmountOut data={exitItems} />

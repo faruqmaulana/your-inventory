@@ -32,12 +32,13 @@ const AppBarContent = props => {
             <Menu />
           </IconButton>
         ) : null}
-        {data ?
+        {data ? (
           <Box sx={{ fontWeight: '800', fontSize: '1rem', padding: '20px', color: 'text.primary' }}>
             {`Selamat datang, ${data.name}`}
-          </Box> :
+          </Box>
+        ) : (
           <Skeleton sx={{ width: '150px' }} />
-        }
+        )}
       </Box>
       <Box className='actions-right' sx={{ display: 'flex', alignItems: 'center' }}>
         <ModeToggler settings={settings} saveSettings={saveSettings} />

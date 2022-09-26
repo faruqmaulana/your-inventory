@@ -1,3 +1,1 @@
-export default function apiAuth(req) {
-
-}
+export default function apiAuth(req) {}

@@ -15,9 +15,7 @@ import DotsVertical from 'mdi-material-ui/DotsVertical'
 import ClipboardTextMultiple from 'mdi-material-ui/ClipboardTextMultiple'
 import Account from 'mdi-material-ui/Account'
 
-
 const renderStats = ({ data, session }) => {
-
   const salesData = [
     {
       stats: data.goodsCount,
@@ -77,7 +75,6 @@ const renderStats = ({ data, session }) => {
 }
 
 const StatisticsCard = ({ data, session }) => {
-
   return (
     <Card>
       <CardHeader
